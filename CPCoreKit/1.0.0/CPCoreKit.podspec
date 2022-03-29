@@ -17,14 +17,11 @@ TODO: Add long description of the pod here.
 
   s.homepage         = 'https://github.com/LiftCommerce/CPCoreKit'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Cloud Payments' => 'yanelsy2907@gmail.com' }
+  s.author           = { 'Cloud Payments' => 'apple@cloudpayments.com' }
   s.source           = { :git => 'https://github.com/LiftCommerce/CPCoreKit.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '13.0'
+  s.swift_versions = '4.2'
+  s.source_files = 'CPCore/Classes/**/*.{h,m,swift}'
 
-  s.source_files = 'CPCoreKit/Classes/**/*'
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
