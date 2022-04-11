@@ -20,8 +20,9 @@ TODO: Add long description of the pod here.
   s.author           = { 'Cloud Payments' => 'apple@cloudpayments.com' }
   s.source           = { :git => 'https://github.com/LiftCommerce/CPCoreKit.git', :tag => s.version.to_s }
   s.vendored_frameworks = "CPCoreKit.xcframework"
+  s.platform = :ios
   s.ios.deployment_target = '13.0'
   s.swift_versions = '4.2'
-  s.source_files = 'CPCore/**/*.{h,m,swift}'
+ 
 
 end
