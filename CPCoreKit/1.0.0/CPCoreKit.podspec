@@ -5,8 +5,8 @@
 # Any lines starting with a # are optional, but their use is encouraged
 # To learn more about a Podspec see https://guides.cocoapods.org/syntax/podspec.html
 #
-
 Pod::Spec.new do |s|
+git
   s.name             = 'CPCoreKit'
   s.version          = '1.0.0'
   s.summary          = 'Foundational Cloud Payments iOS framework."
@@ -24,5 +24,3 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '13.0'
   s.swift_versions = '4.2'
  
-
-end
