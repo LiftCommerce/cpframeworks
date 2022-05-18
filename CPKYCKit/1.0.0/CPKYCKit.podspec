@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-    s.name         = "CPKYCKit"
+    s.name         = "CPKycKit"
     s.version      = "1.0.0"
     s.summary      = "Foundational Cloud Payments iOS framework."
     s.description  = <<-DESC
