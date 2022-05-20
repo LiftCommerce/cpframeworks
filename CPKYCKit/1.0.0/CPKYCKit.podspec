@@ -5,11 +5,11 @@ Pod::Spec.new do |s|
     s.description  = <<-DESC
     An extended description of MyFramework project.
     DESC
-    s.homepage     = "https://github.com/LiftCommerce/CPKYCKit"
+    s.homepage     = "https://github.com/LiftCommerce/CPKycKit"
     s.license          = { :type => "MIT", :file => "LICENSE" }
     s.author             = { "Cloud Payments" => "apple@cloudpayments.com" }
-    s.source       = { :git => "https://github.com/LiftCommerce/CPKYCKit.git", :tag => s.version }
-    s.vendored_frameworks = "Framework/CPKYCKit.xcframework"
+    s.source       = { :git => "https://github.com/LiftCommerce/CPKycKit.git", :tag => s.version }
+    s.vendored_frameworks = "Framework/CPKycKit.xcframework"
     
     s.platform = :ios
     s.swift_version = "4.2"
