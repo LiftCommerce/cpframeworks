@@ -10,7 +10,7 @@ Pod::Spec.new do |s|
     s.author             = { "Cloud Payments" => "apple@cloudpayments.com" }
     s.source       = { :git => "https://github.com/LiftCommerce/CPFundsKit.git", :tag => s.version }
     s.vendored_frameworks = "Framework/CPFundsKit.xcframework"
-    
+    s.dependency "CPPayKit", "1.0.0"
     s.platform = :ios
     s.swift_version = "4.2"
     s.ios.deployment_target  = '13.0'
