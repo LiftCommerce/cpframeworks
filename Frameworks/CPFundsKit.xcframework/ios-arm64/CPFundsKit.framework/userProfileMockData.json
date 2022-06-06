@@ -1,0 +1,45 @@
+{
+  "user" : {
+    "id" : 12592,
+    "holdBalance" : 0,
+    "email" : "yanelsy2907+02@gmail.com",
+    "createdDate" : "2021-11-12T19:56:26.489+0000",
+    "telephone" : null,
+    "name" : "Yanelsy Rivera",
+    "validPhone" : false,
+    "birthDate" : null,
+    "accountBalance" : 10,
+    "addresses" : [
+
+    ],
+    "creditHoldBalance" : 0,
+    "svaId" : "19308",
+    "firstName" : "Yanelsy",
+    "lastName" : "Rivera",
+    "healthCare" : {
+      "country" : "US",
+      "status" : "ACTIVE",
+      "companyCode" : "hcfl03",
+      "logoUrl" : "http:\/\/api-dev.liftcommerce.com\/fundz-ms\/img\/1636633633illinoils.png",
+      "email" : "florida@gmail.com",
+      "companyId" : 9909,
+      "name" : "Healthcare Chicago"
+    },
+    "summary" : {
+      "reachedEvents" : 0,
+      "pendingMessages" : 1,
+      "pendingIncomingMoneyRequests" : 0,
+      "pendingInvitation" : 0
+    },
+    "userUUID" : "da318cc4-48fe-4b25-b4f9-b00ff7f3beb6",
+    "playerId" : null,
+    "availableBalance" : 10,
+    "tenantName" : "FUNDZ",
+    "username" : "yanelsy2907+02@gmail.com",
+    "validEmail" : true,
+    "imgUrl" : null
+  },
+  "code" : 200,
+  "statusCode" : "OK",
+  "msg" : "Success"
+}

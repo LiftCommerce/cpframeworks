@@ -1,0 +1,21 @@
+{
+    "statusCode": "OK",
+    "code": 200,
+    "msg": "Success",
+    "appointment": {
+        "id": 14590,
+        "title": "Second  appointment Yanelsy",
+        "createDate": "2022-01-02T18:00:00.000+0000",
+        "message": "2",
+        "status": "SCHEDULED"
+    },
+    "company": {
+        "name": "Dr David Mendez",
+        "companyCode": "hospchw01",
+        "country": "US",
+        "status": "ACTIVE",
+        "companyId": 10015,
+        "logoUrl": "https://www.unotv.com/uploads/2021/10/maradona-pobreza-deportistas-serie-161605.jpg",
+        "email": "chwomen@gmail.com"
+    }
+}

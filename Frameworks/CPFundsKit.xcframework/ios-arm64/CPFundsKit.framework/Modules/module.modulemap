@@ -1,0 +1,4 @@
+framework module CPFundsKit {
+  header "CPFundsKit-Swift.h"
+  requires objc
+}

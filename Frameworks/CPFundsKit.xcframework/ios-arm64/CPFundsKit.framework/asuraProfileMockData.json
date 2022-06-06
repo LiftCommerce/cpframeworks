@@ -1,0 +1,17 @@
+{
+  "msg" : "Success",
+  "kardStatus" : "APPLIED",
+  "code" : 200,
+  "rewardsPoints" : 1545,
+  "unreadCount" : 18,
+  "healthCare" : {
+    "country" : "US",
+    "name" : "Healthcare Chicago",
+    "logoUrl" : "http:\/\/api-dev.liftcommerce.com\/fundz-ms\/img\/1636633633illinoils.png",
+    "companyId" : 9909,
+    "companyCode" : "hcfl03",
+    "status" : "ACTIVE",
+    "email" : "florida@gmail.com"
+  },
+  "statusCode" : "OK"
+}

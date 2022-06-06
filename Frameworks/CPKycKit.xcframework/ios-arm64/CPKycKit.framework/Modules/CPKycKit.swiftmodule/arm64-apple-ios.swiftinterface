@@ -1,0 +1,98 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target arm64-apple-ios14.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name CPKycKit
+import CPCoreKit
+@_exported import CPKycKit
+import CPLoginKit
+import Foundation
+import Jumio
+import Swift
+import UIKit
+import _Concurrency
+public class KycViewController {
+  public var viewController: UIKit.UIViewController!
+  public init(model: CPKycKit.KycModel, fromContext: UIKit.UIViewController, dimissCompletion: (() -> ())? = nil)
+  @objc deinit
+}
+public protocol KycControllerProtocol {
+  func getToken(_ completion: ((Swift.Result<CPKycKit.KycToken, CPCoreKit.CPError>) -> ())?)
+  func getUserInfo(_ completion: ((Swift.Result<CPKycKit.KYCStatusInfo, CPCoreKit.CPError>) -> ())?)
+  func registerUser(workFlowId: Swift.String, accountId: Swift.String, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+}
+public class KYCController : CPKycKit.KycControllerProtocol {
+  public func getToken(_ completion: ((Swift.Result<CPKycKit.KycToken, CPCoreKit.CPError>) -> ())?)
+  public func getUserInfo(_ completion: ((Swift.Result<CPKycKit.KYCStatusInfo, CPCoreKit.CPError>) -> ())?)
+  public func registerUser(workFlowId: Swift.String, accountId: Swift.String, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public init()
+  @objc deinit
+}
+public enum KYCProvider : Swift.String, Swift.CustomStringConvertible {
+  case kard
+  case jumio
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class KycToken {
+  public var token: Swift.String {
+    get
+  }
+  public var provider: CPKycKit.KYCProvider {
+    get
+  }
+  @objc deinit
+}
+public enum KycStatus : Swift.String, Swift.CustomStringConvertible {
+  case ACCEPTED
+  case NOT_REGISTERED
+  case LV1
+  case PENDING
+  case NEED_RESUBMIT
+  case APPROVED_VERIFIED
+  case REJECTED
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class KYCStatusInfo {
+  public var status: CPKycKit.KycStatus {
+    get
+  }
+  public var provider: CPKycKit.KYCProvider? {
+    get
+  }
+  public var remainingAttempts: Swift.Int {
+    get
+  }
+  @objc deinit
+}
+public class KycModel {
+  public var status: CPKycKit.KycStatus
+  public var alertStatusTitle: Swift.String {
+    get
+  }
+  public var alertStatusMessage: Swift.String {
+    get
+  }
+  public init(email: Swift.String, phoneNumber: Swift.String)
+  public func getStatus(_ completion: @escaping ((CPKycKit.KycStatus, CPCoreKit.CPError?) -> ()))
+  public func getToken(_ completion: @escaping ((CPCoreKit.CPError?) -> ()))
+  public func userNotRegister(_ completion: @escaping ((CPCoreKit.CPError?) -> ()))
+  @objc deinit
+}
+extension CPKycKit.KYCProvider : Swift.Equatable {}
+extension CPKycKit.KYCProvider : Swift.Hashable {}
+extension CPKycKit.KYCProvider : Swift.RawRepresentable {}
+extension CPKycKit.KycStatus : Swift.Equatable {}
+extension CPKycKit.KycStatus : Swift.Hashable {}
+extension CPKycKit.KycStatus : Swift.RawRepresentable {}

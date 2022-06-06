@@ -1,0 +1,11 @@
+framework module CPKycKit {
+  umbrella header "CPKycKit.h"
+
+  export *
+  module * { export * }
+}
+
+module CPKycKit.Swift {
+    header "CPKycKit-Swift.h"
+    requires objc
+}

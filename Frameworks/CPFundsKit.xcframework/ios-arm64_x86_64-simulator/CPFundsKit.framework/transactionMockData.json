@@ -1,0 +1,19 @@
+{
+      "type" : "PURCHASE",
+      "transactionType" : "DEFAULT",
+      "transactionStatus" : "COMPLETED",
+      "transactionDateTime" : "2021-11-19T11:11:58.105+0000",
+      "transactionSubtype" : "PURCHASE",
+      "amount" : -12,
+      "store" : {
+        "companyId" : 10014,
+        "companyCode" : "hospchs01",
+        "email" : "cksenior@gmail.com",
+        "country" : "US",
+        "logoUrl" : "https:\/\/phantom-marca.unidadeditorial.es\/6b4e76c0002b6d2625a82fd0b2225f89\/resize\/828\/f\/webp\/assets\/multimedia\/imagenes\/2021\/10\/31\/16357200374927.jpg",
+        "name" : "Dr Andres Homes",
+        "status" : "ACTIVE"
+      },
+      "last4" : "8111",
+      "confirmationCode" : "177505"
+}

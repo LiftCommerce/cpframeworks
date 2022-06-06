@@ -1,0 +1,4 @@
+framework module CPCloudKit {
+  header "CPCloudKit-Swift.h"
+  requires objc
+}

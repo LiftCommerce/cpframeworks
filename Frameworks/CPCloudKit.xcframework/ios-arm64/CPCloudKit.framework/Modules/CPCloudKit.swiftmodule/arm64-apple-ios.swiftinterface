@@ -1,0 +1,14 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target arm64-apple-ios13.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name CPCloudKit
+import CPCoreKit
+import Foundation
+import Swift
+import _Concurrency
+@_hasMissingDesignatedInitializers final public class CloudPayments {
+  public static func setup(withPropertyFile file: Swift.String = "CPConfiguration", apiSecret: Swift.String, authorization: Swift.String, CCURL: Swift.String?, merchantid: Swift.String?)
+  public static func setup(withPropertyFile file: Swift.String = "CPConfiguration", configurationKeys keys: CPCoreKit.CPKeys)
+  public static func configuration(_ s: Swift.String) -> CPCoreKit.CPConfiguration?
+  public static func runningDevelopment() -> Swift.Bool
+  @objc deinit
+}

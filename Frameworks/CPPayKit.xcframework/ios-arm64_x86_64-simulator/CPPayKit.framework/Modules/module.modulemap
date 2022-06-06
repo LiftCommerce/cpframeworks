@@ -1,0 +1,11 @@
+framework module CPPayKit {
+  umbrella header "CPPayKit.h"
+
+  export *
+  module * { export * }
+}
+
+module CPPayKit.Swift {
+    header "CPPayKit-Swift.h"
+    requires objc
+}

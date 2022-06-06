@@ -1,0 +1,2083 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name CPFundsKit
+import CoreImage.CIFilterBuiltins
+import CPCloudKit
+import CPCoreKit
+import CPLoginKit
+import CPPayKit
+import CoreImage
+import Foundation
+import Swift
+import SwiftUI
+import UIKit
+import _Concurrency
+public enum FundzQRStatus : Swift.String, Swift.Identifiable {
+  case all, active, inactive, deleted
+  public var id: Swift.Int {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias ID = Swift.Int
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum FundMessageContent : Swift.CustomStringConvertible {
+  public typealias Transaction = CPFundsKit.FundzTransactionRecord
+  public typealias Request = CPFundsKit.FundzMoneyRequest
+  case event(CPFundsKit.Event)
+  case request(CPFundsKit.FundMessageContent.Request)
+  case p2p(CPFundsKit.FundMessageContent.Transaction)
+  public var description: Swift.String {
+    get
+  }
+}
+public enum FundMessageStatus : Swift.String {
+  case all
+  case unread
+  case read
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol FundzMessage : AnyObject, Swift.CustomStringConvertible {
+  var id: Swift.Int { get }
+  var title: Swift.String { get }
+  var message: Swift.String { get }
+  var date: Foundation.Date { get }
+  var type: CPFundsKit.FundzMessageType { get }
+  var imgUrl: Swift.String? { get }
+  var content: CPFundsKit.FundMessageContent? { get }
+  var read: Swift.Bool { get set }
+  var dateRef: Swift.Int64 { get }
+  var data: CPFundsKit.FundzNotificationData? { get }
+}
+extension CPFundsKit.FundzMessage {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum FundzNotificationData : Swift.CustomStringConvertible {
+  case appointment(detail: CPFundsKit.AsuraAppointmentDetail)
+  public var description: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class RemoteFundzMessage : CPFundsKit.FundzMessage {
+  final public var dateRef: Swift.Int64
+  final public var date: Foundation.Date
+  final public var data: CPFundsKit.FundzNotificationData?
+  final public var title: Swift.String
+  final public var message: Swift.String
+  final public var read: Swift.Bool
+  final public var id: Swift.Int
+  final public var type: CPFundsKit.FundzMessageType
+  final public var imgUrl: Swift.String?
+  final public var content: CPFundsKit.FundMessageContent?
+  @objc deinit
+}
+extension CPFundsKit.RemoteFundzMessage {
+  public static func mock() -> CPFundsKit.RemoteFundzMessage?
+}
+public protocol AsuraController {
+  func preRegister(_ user: CPLoginKit.CPUser, phoneNumber: Swift.String?, birthDate: Foundation.Date, biometricVerified: Swift.Bool, additionalData data: [Swift.String : Any]?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func setHealthcare(companyId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func validateEmail(pin: Swift.String, username: Swift.String, password: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func checkUser(username: Swift.String, completion: ((Swift.Result<CPFundsKit.AsuraUserStatus, CPCoreKit.CPError>) -> ())?)
+  func getMyAsuraProfile(completion: ((Swift.Result<CPFundsKit.AsuraProfile, CPCoreKit.CPError>) -> ())?)
+  func getHealthCareProviders(completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  func getMerhantInfo(companyCode: Swift.String, completion: ((Swift.Result<CPFundsKit.FundzMerchantStoreDetail, CPCoreKit.CPError>) -> ())?)
+  func searchProviders(searchTerm: Swift.String, completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  func searchCompany(text: Swift.String, latitude: Swift.Double?, longitude: Swift.Double?, _ completion: ((Swift.Result<[CPFundsKit.FundzShop], CPCoreKit.CPError>) -> ())?)
+  func updatePaymentRequest(_ requestId: Swift.Int, action: CPFundsKit.MoneyRequestAction, paymentSources: [CPFundsKit.AsuraSourcePaymentItem], _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getHealthInsuranceList(_ completion: ((Swift.Result<[CPFundsKit.UserHealthInsurance], CPCoreKit.CPError>) -> ())?)
+  func getHealthInsuranceDetail(id: Swift.String, _ completion: ((Swift.Result<[Swift.String], CPCoreKit.CPError>) -> ())?)
+  func addHealthInsurance(_ insurance: CPFundsKit.UserInsurance, _ completion: ((Swift.Result<CPFundsKit.UserHealthInsurance, CPCoreKit.CPError>) -> ())?)
+  func deleteHealthInsurance(_ id: Swift.Int, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getAppointmentDetail(id: Swift.Int, _ completion: ((Swift.Result<CPFundsKit.AsuraAppointmentDetail, CPCoreKit.CPError>) -> ())?)
+  func getShopRecents(_ completion: ((Swift.Result<[CPFundsKit.FundzShop], CPCoreKit.CPError>) -> ())?)
+  func getFavoriteList(_ completion: ((Swift.Result<[CPFundsKit.FundzShop], CPCoreKit.CPError>) -> ())?)
+  func setFavoriteStore(companyCode: Swift.String, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func removeFavoriteStore(companyCode: Swift.String, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func paymentHistoryByMerchant(companyCode: Swift.String, page: Swift.Int, size: Swift.Int, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+}
+final public class AsuraAppController : CPFundsKit.AsuraController {
+  public init()
+  final public func preRegister(_ user: CPLoginKit.CPUser, phoneNumber: Swift.String?, birthDate: Foundation.Date, biometricVerified: Swift.Bool, additionalData data: [Swift.String : Any]?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func setHealthcare(companyId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func validateEmail(pin: Swift.String, username: Swift.String, password: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func checkUser(username: Swift.String, completion: ((Swift.Result<CPFundsKit.AsuraUserStatus, CPCoreKit.CPError>) -> ())?)
+  final public func getMyAsuraProfile(completion: ((Swift.Result<CPFundsKit.AsuraProfile, CPCoreKit.CPError>) -> ())?)
+  final public func getHealthCareProviders(completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  final public func getMerhantInfo(companyCode: Swift.String, completion: ((Swift.Result<CPFundsKit.FundzMerchantStoreDetail, CPCoreKit.CPError>) -> ())?)
+  final public func searchProviders(searchTerm: Swift.String = "", completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  final public func searchCompany(text: Swift.String, latitude: Swift.Double?, longitude: Swift.Double?, _ completion: ((Swift.Result<[CPFundsKit.FundzShop], CPCoreKit.CPError>) -> ())?)
+  final public func getPaymentDetails(confirmationCode code: Swift.String, completion: ((Swift.Result<CPFundsKit.AsuraPaymentDetails, CPCoreKit.CPError>) -> ())?)
+  final public func payProvider(_ provider: CPFundsKit.MerchantStore, usingPayments paymentSource: [CPFundsKit.AsuraSourcePaymentItem], notes: Swift.String? = nil, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func updatePaymentRequest(_ requestId: Swift.Int, action: CPFundsKit.MoneyRequestAction, paymentSources: [CPFundsKit.AsuraSourcePaymentItem], _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getHealthInsuranceList(_ completion: ((Swift.Result<[CPFundsKit.UserHealthInsurance], CPCoreKit.CPError>) -> ())?)
+  final public func getHealthInsuranceDetail(id: Swift.String, _ completion: ((Swift.Result<[Swift.String], CPCoreKit.CPError>) -> ())?)
+  final public func addHealthInsurance(_ insurance: CPFundsKit.UserInsurance, _ completion: ((Swift.Result<CPFundsKit.UserHealthInsurance, CPCoreKit.CPError>) -> ())?)
+  final public func deleteHealthInsurance(_ id: Swift.Int, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getAppointmentDetail(id: Swift.Int, _ completion: ((Swift.Result<CPFundsKit.AsuraAppointmentDetail, CPCoreKit.CPError>) -> ())?)
+  final public func updateAppointment(_ appointment: CPFundsKit.UserAppointment, insuranceId: Swift.Int? = nil, username: Swift.String, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getShopRecents(_ completion: ((Swift.Result<[CPFundsKit.FundzShop], CPCoreKit.CPError>) -> ())?)
+  final public func getFavoriteList(_ completion: ((Swift.Result<[CPFundsKit.FundzShop], CPCoreKit.CPError>) -> ())?)
+  final public func setFavoriteStore(companyCode: Swift.String, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func removeFavoriteStore(companyCode: Swift.String, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func paymentHistoryByMerchant(companyCode: Swift.String, page: Swift.Int, size: Swift.Int, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  @objc deinit
+}
+public enum MoneyRequestAction {
+  case approve, reject
+  public static func == (a: CPFundsKit.MoneyRequestAction, b: CPFundsKit.MoneyRequestAction) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum MoneyRequestRole : Swift.CustomStringConvertible {
+  case sender, receiver, all
+  public var description: Swift.String {
+    get
+  }
+  public static func == (a: CPFundsKit.MoneyRequestRole, b: CPFundsKit.MoneyRequestRole) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum MoneyRequestStatus : Swift.CustomStringConvertible, Swift.CaseIterable {
+  case all, pending, approved, rejected, expired
+  public var description: Swift.String {
+    get
+  }
+  public static func == (a: CPFundsKit.MoneyRequestStatus, b: CPFundsKit.MoneyRequestStatus) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public typealias AllCases = [CPFundsKit.MoneyRequestStatus]
+  public static var allCases: [CPFundsKit.MoneyRequestStatus] {
+    get
+  }
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum MoneyRequestCounterpart : Swift.CustomStringConvertible {
+  public typealias Contact = CPFundsKit.FundzP2PContact
+  case user(user: CPFundsKit.MoneyRequestCounterpart.Contact)
+  case company(company: CPFundsKit.MerchantStore)
+  public var isFromMerchant: Swift.Bool {
+    get
+  }
+  public var isFromUser: Swift.Bool {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol MoneyRequest : Swift.CustomStringConvertible, Swift.Identifiable {
+  typealias Contact = CPFundsKit.FundzP2PContact
+  typealias Transaction = CPFundsKit.FundzTransactionRecord
+  var counterpart: CPFundsKit.MoneyRequestCounterpart { get }
+  var requestId: Swift.Int { get }
+  var amount: Swift.Double { get }
+  var createdDate: Foundation.Date { get }
+  var statusDate: Foundation.Date { get }
+  var status: CPFundsKit.MoneyRequestStatus { get }
+  var role: CPFundsKit.MoneyRequestRole { get }
+  var notes: Swift.String? { get }
+  var originatingTransaction: Self.Transaction? { get }
+}
+public struct MONEY_REQUESTS_NOTIFICATIONS {
+  public static let NOTIFICATION_SENT: Foundation.Notification.Name
+}
+extension CPFundsKit.MoneyRequest {
+  public var description: Swift.String {
+    get
+  }
+  public var id: Swift.Int {
+    get
+  }
+}
+public protocol MoneyRequestHistory {
+  associatedtype T : CPFundsKit.MoneyRequest
+  var pending: Swift.Int { get }
+  var approved: Swift.Int { get }
+  var rejected: Swift.Int { get }
+  var activity: [Self.T] { get }
+}
+@_hasMissingDesignatedInitializers final public class FundzMoneyRequest : CPFundsKit.MoneyRequest, Swift.Hashable, Swift.CustomStringConvertible {
+  final public let requestId: Swift.Int
+  final public let amount: Swift.Double
+  final public let counterpart: CPFundsKit.MoneyRequestCounterpart
+  final public let createdDate: Foundation.Date
+  final public let statusDate: Foundation.Date
+  final public let status: CPFundsKit.MoneyRequestStatus
+  final public let role: CPFundsKit.MoneyRequestRole
+  final public let notes: Swift.String?
+  final public let originatingTransaction: CPFundsKit.FundzMoneyRequest.Transaction?
+  final public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: CPFundsKit.FundzMoneyRequest, rhs: CPFundsKit.FundzMoneyRequest) -> Swift.Bool
+  final public var description: Swift.String {
+    get
+  }
+  public static func mockRequest() -> CPFundsKit.FundzMoneyRequest
+  public typealias ID = Swift.Int
+  @objc deinit
+  final public var hashValue: Swift.Int {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class FundzMoneyRequestHistory : CPFundsKit.MoneyRequestHistory {
+  public typealias T = CPFundsKit.FundzMoneyRequest
+  final public let pending: Swift.Int
+  final public let approved: Swift.Int
+  final public let rejected: Swift.Int
+  final public let activity: [CPFundsKit.FundzMoneyRequestHistory.T]
+  @objc deinit
+}
+extension CPCoreKit.ReportRange {
+  public var returnType: Any.Type {
+    get
+  }
+}
+public enum FundzTransactionSubtype : Swift.String, Swift.CustomStringConvertible {
+  case purchase
+  case refund
+  case cancel
+  case other
+  public static func fromRawValue(_ value: Swift.String) -> CPFundsKit.FundzTransactionSubtype
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol FundzTransaction : Swift.CustomStringConvertible, Swift.Hashable {
+  var confirmationCode: Swift.String { get }
+  var type: CPFundsKit.FundzTransactionType { get }
+  var transactionStatus: CPPayKit.CPTransactionStatus { get }
+  var transactionSubType: CPFundsKit.FundzTransactionSubtype { get }
+  var amount: Swift.Double { get }
+  var transactionDate: Foundation.Date { get }
+  var details: CPFundsKit.FundzTransactionDetails? { get }
+  var canBeRefunded: Swift.Bool { get }
+  var canBeCancelled: Swift.Bool { get }
+  var maxRefundAmount: Swift.Double { get }
+  var canRequestRefund: Swift.Bool { get }
+}
+extension CPFundsKit.FundzTransaction {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum FundzTransactionType : Swift.CustomStringConvertible {
+  case contribute(CPFundsKit.Event)
+  case p2p(CPFundsKit.FundzP2PContact)
+  case p2pUnregisteredPending(CPFundsKit.FundzP2PContact)
+  case p2pUnregisteredCompleted(CPFundsKit.FundzP2PContact)
+  case p2pUnregisteredCancelled(CPFundsKit.FundzP2PContact)
+  case refund(CPFundsKit.Event)
+  case withdraw(CPFundsKit.Event)
+  case loadFromCard(CPFundsKit.HistoryCard)
+  case loadFromBankAccount(CPFundsKit.HistoryBankAccount)
+  case withdrawToBankAccount(CPFundsKit.HistoryBankAccount)
+  case unknown
+  case payMerchant(CPFundsKit.FundzMerchantStore)
+  case consumerPurchase(CPFundsKit.FundzP2PContact)
+  case purchase
+  case consumerRefund(CPFundsKit.FundzP2PContact)
+  case commitHold
+  case commitCreditHold
+  case errorCommitCreditHold
+  case errorCommitHold
+  case rollbackCommitHold
+  case rollbackCommitCreditHold
+  case cashoutSvaToBank
+  case credit
+  case confirmBank
+  case cashinBankToSva
+  case transfer
+  case purchaseCancel(CPFundsKit.FundzP2PContact)
+  case debitCnpCard
+  case loadFromPoints
+  case unknownType(Swift.String)
+  public var description: Swift.String {
+    get
+  }
+}
+extension CPFundsKit.FundzTransactionRecord {
+  public var title: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class FundzTransactionDetails {
+  public var maxRefundAmount: Swift.Double {
+    get
+  }
+  public var canBeRefunded: Swift.Bool {
+    get
+  }
+  public var canBeCancelled: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class FundzTransactionRecord : CPFundsKit.FundzTransaction {
+  public var canBeRefunded: Swift.Bool {
+    get
+  }
+  public var canBeCancelled: Swift.Bool {
+    get
+  }
+  public var maxRefundAmount: Swift.Double {
+    get
+  }
+  public var canRequestRefund: Swift.Bool {
+    get
+  }
+  public var transactionSubType: CPFundsKit.FundzTransactionSubtype
+  public var confirmationCode: Swift.String {
+    get
+  }
+  public var type: CPFundsKit.FundzTransactionType {
+    get
+  }
+  public var amount: Swift.Double {
+    get
+  }
+  public var transactionStatus: CPPayKit.CPTransactionStatus {
+    get
+  }
+  public var transactionDate: Foundation.Date {
+    get
+  }
+  public var notes: Swift.String? {
+    get
+  }
+  public var details: CPFundsKit.FundzTransactionDetails? {
+    get
+  }
+  public var companyStore: CPFundsKit.MerchantStore? {
+    get
+  }
+  public var containerId: Swift.String? {
+    get
+  }
+  public static func == (lhs: CPFundsKit.FundzTransactionRecord, rhs: CPFundsKit.FundzTransactionRecord) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  @objc deinit
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+extension CPFundsKit.FundzTransactionRecord {
+  public static func mock() -> CPFundsKit.FundzTransactionRecord?
+}
+public protocol FundzTransactionHistory {
+  associatedtype T : CPFundsKit.FundzTransaction
+  var currentBalance: Swift.Double { get }
+  var transactions: [Self.T] { get }
+}
+public struct FundzTransactionHistoryResult : CPFundsKit.FundzTransactionHistory {
+  public typealias T = CPFundsKit.FundzTransactionRecord
+  public let currentBalance: Swift.Double
+  public let transactions: [CPFundsKit.FundzTransactionHistoryResult.T]
+}
+public struct FundzHistoryBankAccount : CPFundsKit.HistoryBankAccount {
+  public var accountType: CPPayKit.CPBankAccountType
+  public var last4: Swift.String
+  public var description: Swift.String
+  public var transactionType: CPFundsKit.BankTransactionType
+}
+public struct FundzHistoryCard : CPFundsKit.HistoryCard {
+  public var last4: Swift.String
+  public let cardType: CPPayKit.CPCardType
+  public var image: UIKit.UIImage? {
+    get
+  }
+}
+public protocol P2PContact : AnyObject, Swift.CustomStringConvertible, Swift.Hashable {
+  var name: Swift.String { get }
+  var lastName: Swift.String { get }
+  var email: Swift.String { get }
+  func getAvatar(_ completion: @escaping ((UIKit.UIImage?) -> ()))
+  var isBlocked: Swift.Bool { get }
+  var imgUrl: Foundation.URL? { get set }
+  var isRegistered: Swift.Bool { get }
+  var hasAvailableInfo: Swift.Bool { get }
+  var avatar: UIKit.UIImage? { get set }
+  var userid: Swift.String? { get }
+}
+extension CPFundsKit.P2PContact {
+  public func getAvatar(fromUrl url: Foundation.URL, completion: @escaping ((UIKit.UIImage?) -> ()))
+  public func getAvatar(_ completion: @escaping ((UIKit.UIImage?) -> ()))
+}
+extension CPFundsKit.P2PContact {
+  public var description: Swift.String {
+    get
+  }
+}
+extension CPFundsKit.P2PContact {
+  public func hash(into hasher: inout Swift.Hasher)
+  public static func == (lhs: Self, rhs: Self) -> Swift.Bool
+}
+@_hasMissingDesignatedInitializers public class FundzUserAddress : CPFundsKit.UserAddress {
+  public var city: Swift.String
+  public var country: Swift.String
+  public var isDefault: Swift.Bool
+  public var state: Swift.String
+  public var address1: Swift.String
+  public var address2: Swift.String
+  public var zipCode: Swift.String
+  public var id: Swift.Int
+  public init(address1: Swift.String, address2: Swift.String?, zipCode: Swift.String, city: Swift.String, state: Swift.String, country: Swift.String, isDefault: Swift.Bool = false)
+  public func requestDiccionary() -> [Swift.String : Any]
+  @objc deinit
+}
+public struct KYCVerificationLevel1 {
+  public var city: Swift.String {
+    get
+  }
+  public var country: Swift.String {
+    get
+  }
+  public var dateOfBirth: Swift.String {
+    get
+  }
+  public var documentType: Swift.String {
+    get
+  }
+  public var emailAddress: Swift.String {
+    get
+  }
+  public var fullName: Swift.String {
+    get
+  }
+  public var gender: Swift.String {
+    get
+  }
+  public var phoneNumber: Swift.String {
+    get
+  }
+  public var postalCode: Swift.String {
+    get
+  }
+  public var region: Swift.String {
+    get
+  }
+  public var streetAddress: Swift.String {
+    get
+  }
+  public var taxCountry: Swift.String {
+    get
+  }
+  public var taxIdNumber: Swift.String {
+    get
+  }
+  public var taxState: Swift.String {
+    get
+  }
+  public var docId: Swift.String? {
+    get
+  }
+  public init(city: Swift.String, country: Swift.String, dateOfBirth: Swift.String, documentType: Swift.String, email: Swift.String, name: Swift.String, gender: Swift.String, phoneNumber: Swift.String, postalCode: Swift.String, region: Swift.String, streetAddress: Swift.String, taxCountry: Swift.String, taxIdNumber: Swift.String, taxState: Swift.String, docId: Swift.String)
+}
+public enum KYCStatus : Swift.String, Swift.CustomStringConvertible {
+  case LV1
+  case PENDING
+  case APPROVED_VERIFIED
+  case LV2_REJECTED
+  case LV2_APPROVED
+  case NOT_REGISTERED
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol EventContributor {
+  var username: Swift.String { get }
+  var createdDate: Foundation.Date { get }
+  var updatedDate: Foundation.Date { get }
+  var id: Swift.String { get }
+  var firstname: Swift.String { get }
+  var lastname: Swift.String { get }
+  var status: CPFundsKit.EventContributorStatus { get }
+  var amount: Swift.Double { get }
+}
+@_hasMissingDesignatedInitializers final public class AsuraUserProfile : CPFundsKit.AsuraProfile {
+  final public var healthcareProvider: CPFundsKit.HealthCareProvider
+  final public var unreadCount: Swift.Int {
+    get
+  }
+  final public var kardStatus: CPFundsKit.KardStatus {
+    get
+  }
+  final public var rewardPoints: Swift.Int {
+    get
+  }
+  final public var rewardRate: Swift.Int {
+    get
+  }
+  @objc deinit
+}
+extension CPFundsKit.AsuraUserProfile {
+  public static func mock() -> CPFundsKit.AsuraUserProfile?
+}
+public struct AsuraMoneyContainerDetails {
+  public var modizoId: Swift.Int {
+    get
+  }
+  public var containerId: Swift.Int {
+    get
+  }
+  public var type: CPPayKit.CPCardType {
+    get
+  }
+  public var containerDescription: Swift.String {
+    get
+  }
+  public var last4: Swift.String {
+    get
+  }
+}
+public protocol MerchantStoreDetail : Swift.CustomStringConvertible {
+  var webSite: Foundation.URL { get }
+  var telephone: Swift.String { get }
+  var isFavorite: Swift.Bool { get }
+  var address: CPFundsKit.FundzMerchantStoreAddress { get }
+}
+@_hasMissingDesignatedInitializers final public class FundzMerchantStoreDetail : CPFundsKit.MerchantStoreDetail {
+  final public var webSite: Foundation.URL
+  final public var telephone: Swift.String
+  final public var isFavorite: Swift.Bool
+  final public var address: CPFundsKit.FundzMerchantStoreAddress
+  final public var description: Swift.String {
+    get
+  }
+  final public func updateFavorite(_ favorite: Swift.Bool)
+  @objc deinit
+}
+public enum RefundType : Swift.CustomStringConvertible {
+  case refund(Swift.Double)
+  case cancel(Swift.Double)
+  public var description: Swift.String {
+    get
+  }
+  public var amount: Swift.Double {
+    get
+  }
+}
+public struct FundzUserQR {
+  public let username: Swift.String
+  public let firstName: Swift.String
+  public let lastName: Swift.String
+  public let name: Swift.String
+  public let userId: Swift.String
+  public init?()
+  public init?(userQRString: Swift.String)
+  public func jsonString() -> Swift.String?
+  public var qrCode: CPCoreKit.CPQRCode? {
+    get
+  }
+  public func qrView(size: CoreGraphics.CGSize = CGSize(width: 80, height: 80), backgroundColor: UIKit.UIColor = .white, foregroundColor: UIKit.UIColor = .black) -> UIKit.UIView
+}
+@_hasMissingDesignatedInitializers final public class UserAppointment : CPFundsKit.Appointment {
+  final public var id: Swift.Int
+  final public var title: Swift.String
+  final public var createDate: Foundation.Date?
+  final public var message: Swift.String?
+  final public var status: CPFundsKit.AppointmentStatus?
+  final public var notes: Swift.String?
+  final public func mock()
+  @objc deinit
+}
+public struct AsuraSourcePaymentItem {
+  public var dictionary: [Swift.String : Any] {
+    get
+  }
+  public static func fromCardId(_ cardId: Swift.String, toPay amount: Swift.Double) -> CPFundsKit.AsuraSourcePaymentItem
+  public static func fromRewardPoints(amount: Swift.Double) -> CPFundsKit.AsuraSourcePaymentItem
+}
+public enum BankTransactionType {
+  case cashInToSVA
+  case cashOutToBankAccount, none
+  public static func == (a: CPFundsKit.BankTransactionType, b: CPFundsKit.BankTransactionType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol HistoryBankAccount : Swift.CustomStringConvertible {
+  var accountType: CPPayKit.CPBankAccountType { get }
+  var last4: Swift.String { get }
+  var transactionType: CPFundsKit.BankTransactionType { get }
+}
+public protocol HistoryCard : Swift.CustomStringConvertible {
+  var cardType: CPPayKit.CPCardType { get }
+  var image: UIKit.UIImage? { get }
+  var last4: Swift.String { get }
+}
+extension CPFundsKit.HistoryCard {
+  public var description: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class FundzEventDetails : CPFundsKit.EventDetails {
+  public var pendingInvitations: Swift.Int {
+    get
+  }
+  public var declinedInvations: Swift.Int {
+    get
+  }
+  public var currentContributors: Swift.Int {
+    get
+  }
+  public var payingContributors: Swift.Int {
+    get
+  }
+  public var estimatedContributors: Swift.Int {
+    get
+  }
+  public var status: CPFundsKit.EventStatus {
+    get
+  }
+  public var suggestedContribution: Swift.Double {
+    get
+  }
+  @objc deinit
+}
+public protocol FundzLoyaltyControllerProtocol {
+  typealias FLTR = CPFundsKit.LoyaltyTransactionRecord
+  typealias FR = CPFundsKit.FundzReward
+  typealias FC = CPFundsKit.FundzP2PContact
+  func isCampaignActive(for companyId: Swift.Int, completion: ((Swift.Result<Swift.Bool, CPCoreKit.CPError>) -> ())?)
+  func activateCampaign(for companyId: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func suspendCampaign(for companyId: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func deleteReward(id: Swift.String, for companyId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func update(withId id: Swift.String, name: Swift.String, rewardDescription: Swift.String?, pointsRequired points: Swift.Int, for companyId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getTransactionHistory(for store: CPFundsKit.MerchantStore, limit: Swift.Int, offset: Swift.Int, completion: ((Swift.Result<[Self.FLTR], CPCoreKit.CPError>) -> ())?)
+  func getCustomers(for store: CPFundsKit.MerchantStore, limit: Swift.Int, offset: Swift.Int, completion: ((Swift.Result<[Self.FC], CPCoreKit.CPError>) -> ())?)
+}
+public class FundzLoyaltyController : CPFundsKit.FundzLoyaltyControllerProtocol {
+  public init()
+  public func isCampaignActive(for companyId: Swift.Int, completion: ((Swift.Result<Swift.Bool, CPCoreKit.CPError>) -> ())?)
+  public func activateCampaign(for companyId: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public func suspendCampaign(for companyId: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public func addReward(named name: Swift.String, rewardDescription: Swift.String?, pointsRequired points: Swift.Int, for companyId: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public func getRewards(for companyId: Swift.Int, completion: ((Swift.Result<[CPFundsKit.FundzLoyaltyController.FR], CPCoreKit.CPError>) -> ())?)
+  public func deleteReward(id: Swift.String, for companyId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public func update(withId id: Swift.String, name: Swift.String, rewardDescription: Swift.String?, pointsRequired points: Swift.Int, for companyId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public func getTransactionHistory(for store: CPFundsKit.MerchantStore, limit: Swift.Int, offset: Swift.Int, completion: ((Swift.Result<[CPFundsKit.FundzLoyaltyController.FLTR], CPCoreKit.CPError>) -> ())?)
+  public func getCustomers(for store: CPFundsKit.MerchantStore, limit: Swift.Int, offset: Swift.Int, completion: ((Swift.Result<[CPFundsKit.FundzLoyaltyController.FC], CPCoreKit.CPError>) -> ())?)
+  public func searchCustomers(for store: CPFundsKit.MerchantStore, term: Swift.String, completion: ((Swift.Result<[CPFundsKit.FundzLoyaltyController.FC], CPCoreKit.CPError>) -> ())?)
+  public func getCustomerInfo(customerId: Swift.String, storeid: Swift.Int, completion: ((Swift.Result<CPFundsKit.FundzUserLoyaltyInfo, CPCoreKit.CPError>) -> ())?)
+  public func getCustomerTransactionHistory(for store: CPFundsKit.MerchantStore, userid: Swift.String, limit: Swift.Int, offset: Swift.Int, completion: ((Swift.Result<[CPFundsKit.FundzLoyaltyController.FLTR], CPCoreKit.CPError>) -> ())?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class FundzEvent {
+  public var lastUpdatedRef: Swift.Int64 {
+    get
+  }
+  public var details: CPFundsKit.EventDetails? {
+    get
+  }
+  public var creator: CPFundsKit.EventCreator {
+    get
+  }
+  public var status: CPFundsKit.EventStatus {
+    get
+  }
+  public var dateCreated: Foundation.Date {
+    get
+  }
+  public var id: Swift.String {
+    get
+  }
+  public var title: Swift.String {
+    get
+  }
+  public var eventDescription: Swift.String {
+    get
+  }
+  public var amountType: CPFundsKit.EventAmountType {
+    get
+  }
+  public var contributorsType: CPFundsKit.EventContributorsType {
+    get
+  }
+  public var expirationDate: Foundation.Date
+  public var currentBalance: Swift.Double {
+    get
+  }
+  public var goalAmount: Swift.Double {
+    get
+  }
+  public var currentContributors: Swift.Int {
+    get
+  }
+  public var timeZone: Foundation.TimeZone {
+    get
+  }
+  public var lastUpdated: Foundation.Date {
+    get
+  }
+  public var numberOfInvitees: Swift.Int {
+    get
+  }
+  public func fromEvent(event: CPFundsKit.Event) -> CPFundsKit.FundzEvent
+  convenience public init?(title: Swift.String, description: Swift.String, amountType: CPFundsKit.EventAmountType, contributorsType: CPFundsKit.EventContributorsType, expirationDate: Foundation.Date)
+  @objc deinit
+}
+public protocol UserAddress {
+  var address1: Swift.String { get set }
+  var address2: Swift.String { get set }
+  var city: Swift.String { get set }
+  var country: Swift.String { get set }
+  var isDefault: Swift.Bool { get set }
+  var state: Swift.String { get set }
+  var zipCode: Swift.String { get set }
+  var id: Swift.Int { get }
+  func requestDiccionary() -> [Swift.String : Any]
+}
+public protocol EventsController {
+  associatedtype EventType : CPFundsKit.Event
+  func getMyRecentEvents(withStatus status: [CPFundsKit.EventStatus]?, completion: ((Swift.Result<[Self.EventType], CPCoreKit.CPError>) -> ())?)
+  func getMyRecentEvents(withStatus status: Swift.Set<CPFundsKit.EventStatus>?, completion: ((Swift.Result<[Self.EventType], CPCoreKit.CPError>) -> ())?)
+  func createEvent(_ event: CPFundsKit.Event, completion: ((Swift.Result<CPFundsKit.Event, CPCoreKit.CPError>) -> ())?)
+  func getDetails(_ event: CPFundsKit.Event, completion: ((Swift.Result<(event: CPFundsKit.Event, details: CPFundsKit.EventDetails), CPCoreKit.CPError>) -> ())?)
+  func getContributingEventDetails(forEventId eventid: Swift.String, completion: ((Swift.Result<(event: CPFundsKit.ContributingEvent, details: CPFundsKit.EventDetails), CPCoreKit.CPError>) -> ())?)
+  func getDetails(_ eventid: Swift.String, completion: ((Swift.Result<(event: CPFundsKit.Event, details: CPFundsKit.EventDetails), CPCoreKit.CPError>) -> ())?)
+  func updateEvent(_ event: CPFundsKit.Event, completion: ((Swift.Result<Self.EventType, CPCoreKit.CPError>) -> ())?)
+  func deleteEvent(_ event: CPFundsKit.Event, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getEventsWith(status: CPFundsKit.EventStatus, completion: ((Swift.Result<[Self.EventType], CPCoreKit.CPError>) -> ())?)
+  func getContributors(for event: CPFundsKit.Event, contributorStatus status: CPFundsKit.EventContributorStatus, completion: ((Swift.Result<[CPFundsKit.FundzEventContributor], CPCoreKit.CPError>) -> ())?)
+  func sendInvites(for event: CPFundsKit.Event, to invitees: [CPFundsKit.EventInvitee], completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func acceptInvite(toEventWithId eventid: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func declineInvite(toEventWithId eventid: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func contributeToEvent(withId eventId: Swift.String, amount: Swift.Double, svaId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getMyEvents(status: CPFundsKit.EventStatus, below: Swift.Int64?, pageSize page: Swift.Int, completion: ((Swift.Result<[CPFundsKit.FundzEvent], CPCoreKit.CPError>) -> ())?)
+  func getContributions(to event: CPFundsKit.Event, completion: ((Swift.Result<[CPFundsKit.EventContribution], CPCoreKit.CPError>) -> ())?)
+  func withdrawFundz(from event: CPFundsKit.Event, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func withdrawFundz(fromEventWithId eventId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getMyContributingEvents(contributingStatus: CPFundsKit.ContributingEventStatus, eventStatus status: CPFundsKit.EventStatus?, below: Swift.Int64?, pageSize page: Swift.Int, completion: ((Swift.Result<[CPFundsKit.ContributingEvent], CPCoreKit.CPError>) -> ())?)
+  func getMyRecentContributinEvents(withContributingStatus contributingStatus: Swift.Set<CPFundsKit.ContributingEventStatus>?, eventStatus: CPFundsKit.EventStatus?, pageSize page: Swift.Int, completion: ((Swift.Result<[CPFundsKit.ContributingEvent], CPCoreKit.CPError>) -> ())?)
+  func getMyRecentContributinEvents(withContributingStatus contributingStatus: [CPFundsKit.ContributingEventStatus]?, eventStatus: CPFundsKit.EventStatus?, pageSize page: Swift.Int, completion: ((Swift.Result<[CPFundsKit.ContributingEvent], CPCoreKit.CPError>) -> ())?)
+}
+final public class FundzEventsController : CPFundsKit.EventsController {
+  final public func getMyRecentContributinEvents(withContributingStatus contributingStatus: [CPFundsKit.ContributingEventStatus]?, eventStatus: CPFundsKit.EventStatus?, pageSize page: Swift.Int = 10, completion: ((Swift.Result<[CPFundsKit.ContributingEvent], CPCoreKit.CPError>) -> ())?)
+  final public func getMyRecentContributinEvents(withContributingStatus contributingStatus: Swift.Set<CPFundsKit.ContributingEventStatus>?, eventStatus: CPFundsKit.EventStatus?, pageSize page: Swift.Int = 10, completion: ((Swift.Result<[CPFundsKit.ContributingEvent], CPCoreKit.CPError>) -> ())?)
+  final public func getMyContributingEvents(contributingStatus: CPFundsKit.ContributingEventStatus, eventStatus status: CPFundsKit.EventStatus?, below: Swift.Int64?, pageSize page: Swift.Int = 10, completion: ((Swift.Result<[CPFundsKit.ContributingEvent], CPCoreKit.CPError>) -> ())?)
+  final public func getMyEvents(status: CPFundsKit.EventStatus, below: Swift.Int64?, pageSize page: Swift.Int, completion: ((Swift.Result<[CPFundsKit.FundzEvent], CPCoreKit.CPError>) -> ())?)
+  final public func getMyRecentEvents(withStatus status: [CPFundsKit.EventStatus]?, completion: ((Swift.Result<[CPFundsKit.FundzEvent], CPCoreKit.CPError>) -> ())?)
+  final public func getMyRecentEvents(withStatus status: Swift.Set<CPFundsKit.EventStatus>?, completion: ((Swift.Result<[CPFundsKit.FundzEvent], CPCoreKit.CPError>) -> ())?)
+  final public func withdrawFundz(from event: CPFundsKit.Event, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func withdrawFundz(fromEventWithId eventId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public typealias EventType = CPFundsKit.FundzEvent
+  public init()
+  final public func getMyEvents(status: CPFundsKit.EventStatus, completion: ((Swift.Result<[CPFundsKit.FundzEventsController.EventType], CPCoreKit.CPError>) -> ())?)
+  final public func createEvent(_ event: CPFundsKit.Event, completion: ((Swift.Result<CPFundsKit.Event, CPCoreKit.CPError>) -> ())?)
+  final public func getDetails(_ event: CPFundsKit.Event, completion: ((Swift.Result<(event: CPFundsKit.Event, details: CPFundsKit.EventDetails), CPCoreKit.CPError>) -> ())?)
+  final public func getDetails(_ eventid: Swift.String, completion: ((Swift.Result<(event: CPFundsKit.Event, details: CPFundsKit.EventDetails), CPCoreKit.CPError>) -> ())?)
+  final public func getContributingEventDetails(forEventId eventid: Swift.String, completion: ((Swift.Result<(event: CPFundsKit.ContributingEvent, details: CPFundsKit.EventDetails), CPCoreKit.CPError>) -> ())?)
+  final public func updateEvent(_ event: CPFundsKit.Event, completion: ((Swift.Result<CPFundsKit.FundzEventsController.EventType, CPCoreKit.CPError>) -> ())?)
+  final public func deleteEvent(_ event: CPFundsKit.Event, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getEventsWith(status: CPFundsKit.EventStatus, completion: ((Swift.Result<[CPFundsKit.FundzEventsController.EventType], CPCoreKit.CPError>) -> ())?)
+  final public func getContributors(for event: CPFundsKit.Event, contributorStatus status: CPFundsKit.EventContributorStatus, completion: ((Swift.Result<[CPFundsKit.FundzEventContributor], CPCoreKit.CPError>) -> ())?)
+  final public func sendInvites(for event: CPFundsKit.Event, to invitees: [CPFundsKit.EventInvitee], completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func acceptInvite(toEventWithId eventid: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func declineInvite(toEventWithId eventid: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func contributeToEvent(withId eventId: Swift.String, amount: Swift.Double, svaId: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getContributions(to event: CPFundsKit.Event, completion: ((Swift.Result<[CPFundsKit.EventContribution], CPCoreKit.CPError>) -> ())?)
+  final public func getContributedEvents(status: CPFundsKit.ContributingEventStatus, completion: ((Swift.Result<[CPFundsKit.ContributingEvent], CPCoreKit.CPError>) -> ())?)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class AsuraAppointmentDetail {
+  final public var appointment: CPFundsKit.UserAppointment
+  final public var company: CPFundsKit.HealthCareProvider
+  final public var lastAppointment: Foundation.Date?
+  final public var insurance: CPFundsKit.UserHealthInsurance?
+  public init(fromNotification json: CPCoreKit.CPJSON)
+  @objc deinit
+}
+extension CPFundsKit.AsuraAppointmentDetail {
+  public static func mock() -> CPFundsKit.AsuraAppointmentDetail?
+}
+public struct FundzPaymentQr : CPFundsKit.QRProtocol {
+  public var title: Swift.String
+  public let amount: Swift.Double
+  public let description: Swift.String?
+  public let toUsername: Swift.String?
+  public init?(amount: Swift.Double, description: Swift.String?, toUsername: Swift.String?)
+  public init?(payQrString: Swift.String)
+  public func jsonString() -> Swift.String?
+  public var qrCode: CPCoreKit.CPQRCode? {
+    get
+  }
+  public var image: UIKit.UIImage {
+    get
+  }
+}
+final public class FundzSettingsController {
+  final public func getTermsAndConditions(_ completion: ((Swift.Result<Swift.String, CPCoreKit.CPError>) -> ())?)
+  final public func getPrivacyPolicy(_ completion: ((Swift.Result<Swift.String, CPCoreKit.CPError>) -> ())?)
+  final public func getIsVersionValid(appId: Swift.String, _ completion: ((Swift.Result<Swift.Bool, CPCoreKit.CPError>) -> ())?)
+  public init()
+  @objc deinit
+}
+public protocol EventInvitee {
+  var name: Swift.String { get }
+  var email: Swift.String { get }
+}
+public protocol Reward : Swift.Hashable, Swift.Identifiable {
+  var id: Swift.String { get }
+  var name: Swift.String { get }
+  var rewardDescription: Swift.String? { get }
+  var redemptions: Swift.Int { get }
+  var points: Swift.Int { get }
+}
+extension CPFundsKit.Reward {
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+@_hasMissingDesignatedInitializers final public class FundzP2PContact : CPFundsKit.P2PContact, CPFundsKit.EventInvitee {
+  final public let name: Swift.String
+  final public let lastName: Swift.String
+  final public let email: Swift.String
+  final public var avatar: UIKit.UIImage?
+  final public var imgUrl: Foundation.URL?
+  final public var isBlocked: Swift.Bool
+  final public var isRegistered: Swift.Bool
+  final public var userid: Swift.String?
+  public static let userController: CPFundsKit.FundzUserController
+  final public var hasAvailableInfo: Swift.Bool {
+    get
+  }
+  public init(email: Swift.String, firstName: Swift.String? = nil, lastName: Swift.String? = nil)
+  public init(qrContact: CPFundsKit.FundzUserQR)
+  @objc deinit
+  final public var hashValue: Swift.Int {
+    get
+  }
+}
+final public class FundzQRSummary : Swift.Codable {
+  final public var inactive: Swift.Int
+  final public var active: Swift.Int
+  final public var total: Swift.Int
+  final public var deleted: Swift.Int
+  @objc deinit
+  final public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct FundzSalesSummary : Swift.Codable {
+  public var thisWeek: Swift.Double {
+    get
+  }
+  public var yesterday: Swift.Double {
+    get
+  }
+  public var thisMonth: Swift.Double {
+    get
+  }
+  public var lastWeek: Swift.Double {
+    get
+  }
+  public var pastMonth: Swift.Double {
+    get
+  }
+  public var today: Swift.Double {
+    get
+  }
+  public var refunds: Swift.Double {
+    get
+  }
+  public var totalInRange: Swift.Double {
+    get
+  }
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct FundzMerchantBalance : Swift.Codable {
+  public var total: Swift.Double
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct FundzLoyaltySummary : Swift.Codable {
+  public var rewardsRedemption: Swift.Int {
+    get
+  }
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct FundzCustomersSummary : Swift.Codable {
+  public var newCustomers: Swift.Int {
+    get
+  }
+  public var totalCustomers: Swift.Int {
+    get
+  }
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public struct FundzMerchantSummary : CPFundsKit.MerchantSummary, Swift.Codable {
+  public var qrsSummary: CPFundsKit.FundzQRSummary
+  public var salesSummary: CPFundsKit.FundzSalesSummary
+  public var loyaltySummary: CPFundsKit.FundzLoyaltySummary
+  public var customersSummary: CPFundsKit.FundzCustomersSummary
+  public var merchantBalance: CPFundsKit.FundzMerchantBalance?
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+}
+public protocol EventDetails {
+  var pendingInvitations: Swift.Int { get }
+  var declinedInvations: Swift.Int { get }
+  var currentContributors: Swift.Int { get }
+  var payingContributors: Swift.Int { get }
+  var status: CPFundsKit.EventStatus { get }
+  var suggestedContribution: Swift.Double { get }
+  var estimatedContributors: Swift.Int { get }
+}
+@_hasMissingDesignatedInitializers public class FundzUserProfile : CPFundsKit.UserProfile {
+  public var imgUrlString: Swift.String? {
+    get
+  }
+  public var imgUrl: Foundation.URL? {
+    get
+  }
+  public var username: Swift.String {
+    get
+  }
+  public var firstName: Swift.String {
+    get
+  }
+  public var lastName: Swift.String {
+    get
+  }
+  public var svaId: Swift.String {
+    get
+  }
+  public var id: Swift.Int {
+    get
+  }
+  public var addresses: [CPFundsKit.UserAddress] {
+    get
+  }
+  public var summary: CPFundsKit.UserSummary {
+    get
+  }
+  public var secondaryCredential: CPFundsKit.SecondaryCredentialType! {
+    get
+  }
+  public var phone: Swift.String? {
+    get
+  }
+  public var email: Swift.String? {
+    get
+  }
+  public var validatedPhone: Swift.Bool {
+    get
+  }
+  public var validatedEmail: Swift.Bool {
+    get
+  }
+  public var balances: CPFundsKit.CPBalances {
+    get
+  }
+  public var birthday: Foundation.Date? {
+    get
+  }
+  public var hasBirthday: Swift.Bool {
+    get
+  }
+  public func getAvatar(_ completion: @escaping ((UIKit.UIImage?) -> ()))
+  @objc deinit
+}
+extension CPFundsKit.FundzUserProfile {
+  public static func mock() -> CPFundsKit.FundzUserProfile?
+}
+final public class FundzEventInvitee : CPFundsKit.EventInvitee {
+  final public var name: Swift.String {
+    get
+  }
+  final public var email: Swift.String {
+    get
+  }
+  public init?(name: Swift.String, email: Swift.String)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AsuraCreditCardPayment {
+  public var confirmationCode: Swift.String {
+    get
+  }
+  public var type: Swift.String {
+    get
+  }
+  public var amount: Swift.Double {
+    get
+  }
+  public var transactionStatus: Swift.String {
+    get
+  }
+  public var transactionDate: Foundation.Date {
+    get
+  }
+  public var containerDetails: CPFundsKit.AsuraMoneyContainerDetails {
+    get
+  }
+  public var creditCard: CPPayKit.CPCreditCard? {
+    get
+  }
+  public func setCreditCard(_ card: CPPayKit.CPCreditCard)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class FundzContributingEvent : CPFundsKit.ContributingEvent {
+  public var event: CPFundsKit.Event {
+    get
+  }
+  public var contributingStatus: CPFundsKit.ContributingEventStatus {
+    get
+  }
+  public var expirationDate: Foundation.Date {
+    get
+    set
+  }
+  public static func contributingEvent(fromEvent event: CPFundsKit.Event, status: CPFundsKit.ContributingEventStatus) -> CPFundsKit.ContributingEvent
+  public var lastUpdatedRef: Swift.Int64 {
+    get
+  }
+  public var timeZone: Foundation.TimeZone {
+    get
+  }
+  public var creator: CPFundsKit.EventCreator {
+    get
+  }
+  public var details: CPFundsKit.EventDetails? {
+    get
+  }
+  public var status: CPFundsKit.EventStatus {
+    get
+  }
+  public var id: Swift.String {
+    get
+  }
+  public var title: Swift.String {
+    get
+  }
+  public var eventDescription: Swift.String {
+    get
+  }
+  public var amountType: CPFundsKit.EventAmountType {
+    get
+  }
+  public var contributorsType: CPFundsKit.EventContributorsType {
+    get
+  }
+  public var currentBalance: Swift.Double {
+    get
+  }
+  public var goalAmount: Swift.Double {
+    get
+  }
+  public var currentContributors: Swift.Int {
+    get
+  }
+  public var numberOfInvitees: Swift.Int {
+    get
+  }
+  public var dateCreated: Foundation.Date {
+    get
+  }
+  public var lastUpdated: Foundation.Date {
+    get
+  }
+  @objc deinit
+}
+public protocol UserSummary {
+  var incomingMoneyRequests: Swift.Int { get }
+  var pendingInvitations: Swift.Int { get }
+  var reachedEvents: Swift.Int { get }
+  var unreadMessages: Swift.Int { get }
+}
+public protocol MoneyRequestController {
+  associatedtype MONEY_REQUEST : CPFundsKit.MoneyRequest
+  associatedtype MRH : CPFundsKit.MoneyRequestHistory
+  func requestMoneyFrom(_ username: Swift.String, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func actOnRequest(_ request: Self.MONEY_REQUEST, action: CPFundsKit.MoneyRequestAction, additionalPayment: Swift.Double?, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getMoneyRequestActivity(filter: CPFundsKit.MoneyRequestRole?, status: CPFundsKit.MoneyRequestStatus, below: Swift.Double?, count: Swift.Int?, _ completion: ((Swift.Result<Self.MRH, CPCoreKit.CPError>) -> ())?)
+  func getMoneyRequest(requestId id: Swift.Int, store: CPFundsKit.MerchantStore, completion: ((Swift.Result<Self.MONEY_REQUEST, CPCoreKit.CPError>) -> ())?)
+  func actOnRefundRequest(_ request: Self.MONEY_REQUEST, action: CPFundsKit.MoneyRequestAction, additionalPayment: Swift.Double?, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+}
+final public class FundzMoneyRequestController : CPFundsKit.MoneyRequestController {
+  public typealias MoneyRequest = CPFundsKit.FundzMoneyRequest
+  public typealias MRH = CPFundsKit.FundzMoneyRequestHistory
+  public init()
+  final public func getMoneyRequestActivity(filter: CPFundsKit.MoneyRequestRole?, status: CPFundsKit.MoneyRequestStatus, below: Swift.Double?, count: Swift.Int?, _ completion: ((Swift.Result<CPFundsKit.FundzMoneyRequestController.MRH, CPCoreKit.CPError>) -> ())?)
+  final public func requestMoneyFrom(_ username: Swift.String, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func actOnRequest(_ request: CPFundsKit.FundzMoneyRequestController.MoneyRequest, action: CPFundsKit.MoneyRequestAction, additionalPayment: Swift.Double? = nil, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func actOnRefundRequest(_ request: CPFundsKit.FundzMoneyRequestController.MoneyRequest, action: CPFundsKit.MoneyRequestAction, additionalPayment: Swift.Double? = nil, _ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getMoneyRequest(requestId id: Swift.Int, store: CPFundsKit.MerchantStore, completion: ((Swift.Result<CPFundsKit.FundzMoneyRequestController.MoneyRequest, CPCoreKit.CPError>) -> ())?)
+  final public func requestMerchantRefund(type: CPFundsKit.RefundType, transaction: CPFundsKit.FundzTransactionRecord, message: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  public typealias MONEY_REQUEST = CPFundsKit.FundzMoneyRequestController.MoneyRequest
+  @objc deinit
+}
+public protocol UserHealthInsurance : Swift.CustomStringConvertible {
+  var id: Swift.Int? { get }
+  var name: Swift.String { get }
+  var memberId: Swift.String { get }
+  var valid: Swift.Bool? { get }
+  var coinsurance: Swift.String { get }
+  var deductible: Swift.String { get }
+  var emergency: Swift.String { get }
+  var imgUrl: Swift.String { get }
+  var pcpSpec: Swift.String { get }
+  var rx: Swift.String { get }
+  var cardIssueDate: Foundation.Date { get }
+}
+extension CPFundsKit.UserHealthInsurance {
+  public var description: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class AsuraHealthInsurance : CPFundsKit.UserHealthInsurance {
+  final public var id: Swift.Int? {
+    get
+  }
+  final public var name: Swift.String {
+    get
+  }
+  final public var memberId: Swift.String {
+    get
+  }
+  final public var valid: Swift.Bool? {
+    get
+  }
+  final public var coinsurance: Swift.String {
+    get
+  }
+  final public var deductible: Swift.String {
+    get
+  }
+  final public var emergency: Swift.String {
+    get
+  }
+  final public var imgUrl: Swift.String {
+    get
+  }
+  final public var pcpSpec: Swift.String {
+    get
+  }
+  final public var rx: Swift.String {
+    get
+  }
+  final public var cardIssueDate: Foundation.Date {
+    get
+  }
+  @objc deinit
+}
+public enum FundzMessageType : Swift.String, Swift.Hashable, Swift.Identifiable {
+  public var id: Swift.String {
+    get
+  }
+  case APPOINTMENT
+  case PURCHASE
+  case CONSUMER_APPROVES_PAYMENT
+  case CONSUMER_REJECTS_PAYMENT
+  case CONSUMER_REQUESTS_REFUND
+  case MERCHANT_REQUEST_PAYMENT
+  case MERCHANT_APPROVES_REFUND
+  case MERCHANT_REJECTS_REFUND
+  case FUND_INVITE_RECEIVED
+  case MONEY_TRANSFER_RECEIVED
+  case MONEY_REQUEST_RECEIVED
+  case MONEY_REQUEST_REJECTED
+  case MONEY_REQUEST_APPROVED
+  case EVENT_INVITATION_DECLINED
+  case EVENT_INVITATION_ACCEPTED
+  case EVENT_CONTRIBUTION_RECEIVED
+  case EVENT_FAILED
+  case EVENT_FUND_AUTOWITHDRAWAL
+  case EVENT_REACHED
+  case CONTRIBUTING_EVENT_DELETED
+  case FUND_CONTRIBUTION_REFUNDED
+  case OTHER
+  public static func allValues() -> [CPFundsKit.FundzMessageType]
+  public static func fromPayload(_ payload: [Swift.String : Swift.String]) -> CPFundsKit.FundzMessageType?
+  public init?(rawValue: Swift.String)
+  public typealias ID = Swift.String
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol MerchantStoreQr {
+  var storeName: Swift.String { get }
+  var companyCode: Swift.String { get }
+  var entityId: Swift.Int { get }
+  var requestId: Swift.Int? { get }
+  var qrId: Swift.String? { get }
+  var qrName: Swift.String? { get }
+  var updatedDate: Foundation.Date? { get }
+  var createdDate: Foundation.Date? { get }
+  var status: CPFundsKit.FundzQRStatus { get }
+  var logoUrl: Foundation.URL? { get }
+}
+public struct FundzMerchantStoreQr : CPFundsKit.MerchantStoreQr, Swift.CustomStringConvertible {
+  public let storeName: Swift.String
+  public let companyCode: Swift.String
+  public let entityId: Swift.Int
+  public let qrId: Swift.String?
+  public let qrName: Swift.String?
+  public let updatedDate: Foundation.Date?
+  public let createdDate: Foundation.Date?
+  public let status: CPFundsKit.FundzQRStatus
+  public let requestId: Swift.Int?
+  public let logoUrl: Foundation.URL?
+  public var isRequestStoreQr: Swift.Bool {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  public init(store: CPFundsKit.FundzMerchantStore)
+  public init?(storeQrString: Swift.String)
+  public init?(qrJson j: CPCoreKit.CPJSON)
+}
+public protocol AsuraProfile : Swift.CustomStringConvertible {
+  var unreadCount: Swift.Int { get }
+  var kardStatus: CPFundsKit.KardStatus { get }
+  var rewardPoints: Swift.Int { get }
+  var rewardRate: Swift.Int { get }
+  var healthcareProvider: CPFundsKit.HealthCareProvider { get }
+}
+extension CPFundsKit.AsuraProfile {
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol MerchantMoneyRequest {
+  associatedtype T : CPFundsKit.P2PContact
+  var id: Swift.String { get }
+  var user: Self.T { get }
+  var dateCreated: Foundation.Date { get }
+  var dateUpdated: Foundation.Date { get }
+  var amount: Swift.Double { get }
+  var notes: Swift.String? { get }
+  var companyCode: Swift.String { get }
+}
+public protocol ContributingEvent : CPFundsKit.Event {
+  var contributingStatus: CPFundsKit.ContributingEventStatus { get }
+  var event: CPFundsKit.Event { get }
+  static func contributingEvent(fromEvent event: CPFundsKit.Event, status: CPFundsKit.ContributingEventStatus) -> CPFundsKit.ContributingEvent
+}
+public protocol HealthCareProvider : Swift.CustomStringConvertible {
+  var status: Swift.String { get }
+  var companyId: Swift.Int { get }
+  var logoUrl: Foundation.URL? { get }
+  var companyCode: Swift.String { get }
+  var name: Swift.String { get }
+  var country: Swift.String { get }
+}
+extension CPFundsKit.HealthCareProvider {
+  public var description: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers final public class LoyaltyTransactionRecord : CPFundsKit.FundzLoyaltyTransactionRecord {
+  public typealias T = CPFundsKit.FundzP2PContact
+  final public var user: CPFundsKit.LoyaltyTransactionRecord.T
+  final public var transactionId: Swift.String {
+    get
+  }
+  final public var rewardName: Swift.String {
+    get
+  }
+  final public var code: Swift.String {
+    get
+  }
+  final public var date: Foundation.Date {
+    get
+  }
+  final public var amount: Swift.Int {
+    get
+  }
+  final public var campaignId: Swift.String {
+    get
+  }
+  @objc deinit
+}
+public enum KardStatus : Swift.String {
+  case applied, approved, none, rejected
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol UserLoyaltyInfo {
+  associatedtype FUR : CPFundsKit.Reward
+  var availablePoints: Swift.Int { get }
+  var availableRewards: [Self.FUR] { get }
+}
+@_hasMissingDesignatedInitializers final public class FundzUserLoyaltyInfo : CPFundsKit.UserLoyaltyInfo {
+  public typealias FUR = CPFundsKit.FundzReward
+  final public var availablePoints: Swift.Int {
+    get
+  }
+  final public var availableRewards: [CPFundsKit.FundzUserLoyaltyInfo.FUR] {
+    get
+  }
+  @objc deinit
+}
+public enum MerchantEmployeeStatus : Swift.String, Swift.CustomStringConvertible {
+  case active
+  case inactive
+  case deleted
+  case pending
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class FundzMerchantEmployee : CPFundsKit.P2PContact {
+  public var userid: Swift.String?
+  public var id: Swift.String {
+    get
+  }
+  public var avatar: UIKit.UIImage?
+  public var name: Swift.String
+  public var lastName: Swift.String
+  public var email: Swift.String
+  public var isBlocked: Swift.Bool
+  public var imgUrl: Foundation.URL?
+  public var isRegistered: Swift.Bool
+  public var hasAvailableInfo: Swift.Bool
+  public var status: CPFundsKit.MerchantEmployeeStatus
+  public var updatedDate: Foundation.Date {
+    get
+  }
+  public var createdDate: Foundation.Date {
+    get
+  }
+  @objc deinit
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol EventContribution {
+  var contributorName: Swift.String { get }
+  var contributorUsername: Swift.String { get }
+  var transactionId: Swift.Int { get }
+  var amount: Swift.Double { get }
+  var paymentId: Swift.String { get }
+  var date: Foundation.Date { get }
+}
+public struct FundzEventContribution : CPFundsKit.EventContribution {
+  public var contributorName: Swift.String {
+    get
+  }
+  public var contributorUsername: Swift.String {
+    get
+  }
+  public var transactionId: Swift.Int {
+    get
+  }
+  public var amount: Swift.Double {
+    get
+  }
+  public var paymentId: Swift.String {
+    get
+  }
+  public var date: Foundation.Date {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class FundzShop {
+  public var store: CPFundsKit.FundzMerchantStore {
+    get
+  }
+  public var date: Foundation.Date? {
+    get
+  }
+  public var address: CPFundsKit.FundzMerchantStoreAddress {
+    get
+  }
+  public func updateStore(_ store: CPFundsKit.FundzMerchantStore)
+  public static func mock() -> CPFundsKit.FundzShop
+  @objc deinit
+}
+public protocol FundzUserControllerProtocol {
+  associatedtype Contact : CPFundsKit.P2PContact
+  func checkUser(companyIdIfMerchant: Swift.String?, _ completion: ((Swift.Result<Swift.Bool, CPCoreKit.CPError>) -> ())?)
+  func registerNewFundzUser(_ user: CPLoginKit.CPUser, biometricVerified verified: Swift.Bool, additionalData data: [Swift.String : Any]?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func searchUser(withEmail email: Swift.String, completion: ((Swift.Result<[Self.Contact], CPCoreKit.CPError>) -> ())?)
+  func getP2PBuddies(completion: ((Swift.Result<[Self.Contact], CPCoreKit.CPError>) -> ())?)
+  func sendMoneyTo(_ username: Swift.String, fromSVA sva: Swift.Int, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func logUserOut(_ completion: (() -> ())?)
+  func addContact(_ contact: Self.Contact, completion: ((Swift.Result<Self.Contact, CPCoreKit.CPError>) -> ())?)
+  func removeContact(_ contact: Self.Contact, completion: ((Swift.Result<Self.Contact, CPCoreKit.CPError>) -> ())?)
+  func getAvatar(_ username: Swift.String, completion: ((Swift.Result<UIKit.UIImage?, CPCoreKit.CPError>) -> ())?)
+  func verifyAccount(_ code: Swift.String, forUsername username: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func setEmail(_ email: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func setPhone(_ phone: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func removePhone(_ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func removeEmail(_ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func validatePhone(withPin pin: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func validateEmail(withPin pin: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getBlockedUsers(_ completion: ((Swift.Result<[Self.Contact], CPCoreKit.CPError>) -> ())?)
+  func blockUser(_ contact: Self.Contact, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func unblockUser(_ contact: Self.Contact, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func checkRegistrationStatus(username: Swift.String, password: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func resendValidationPin(credential: Swift.String, credentialType: CPLoginKit.CPUserContactType, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+}
+final public class FundzUserController : CPFundsKit.FundzUserControllerProtocol {
+  public typealias Contact = CPFundsKit.FundzP2PContact
+  public init()
+  final public func checkRegistrationStatus(username: Swift.String, password: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getBlockedUsers(_ completion: ((Swift.Result<[CPFundsKit.FundzUserController.Contact], CPCoreKit.CPError>) -> ())?)
+  final public func blockUser(_ contact: CPFundsKit.FundzUserController.Contact, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func unblockUser(_ contact: CPFundsKit.FundzUserController.Contact, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func checkUser(companyIdIfMerchant: Swift.String? = nil, _ completion: ((Swift.Result<Swift.Bool, CPCoreKit.CPError>) -> ())?)
+  final public func removeContact(_ contact: CPFundsKit.FundzUserController.Contact, completion: ((Swift.Result<CPFundsKit.FundzUserController.Contact, CPCoreKit.CPError>) -> ())?)
+  final public func addContact(_ contact: CPFundsKit.FundzUserController.Contact, completion: ((Swift.Result<CPFundsKit.FundzUserController.Contact, CPCoreKit.CPError>) -> ())?)
+  final public func logUserOut(_ completion: (() -> ())?)
+  final public func searchUser(withEmail email: Swift.String, completion: ((Swift.Result<[CPFundsKit.FundzUserController.Contact], CPCoreKit.CPError>) -> ())?)
+  final public func getAvatar(_ username: Swift.String, completion: ((Swift.Result<UIKit.UIImage?, CPCoreKit.CPError>) -> ())?)
+  final public func getP2PBuddies(completion: ((Swift.Result<[CPFundsKit.FundzUserController.Contact], CPCoreKit.CPError>) -> ())?)
+  final public func sendMoneyTo(_ username: Swift.String, fromSVA sva: Swift.Int, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func addAddress(_ address: CPFundsKit.UserAddress, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func deleteAddress(_ address: CPFundsKit.UserAddress, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func updateAddress(_ address: CPFundsKit.UserAddress, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func setAvatar(_ avatar: UIKit.UIImage, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func removeAvatar(_ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getMyUserInfo(_ completion: ((Swift.Result<CPFundsKit.UserProfile, CPCoreKit.CPError>) -> ())?)
+  final public func verifyAccount(_ pin: Swift.String, forUsername username: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func resendPin(to user: CPLoginKit.CPUser, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func registerNewFundzUser(_ user: CPLoginKit.CPUser, biometricVerified verified: Swift.Bool, additionalData data: [Swift.String : Any]?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func setPhone(_ phone: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func setEmail(_ email: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func removePhone(_ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func removeEmail(_ completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func validatePhone(withPin pin: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func validateEmail(withPin pin: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func resendValidationPin(credential: Swift.String, credentialType: CPLoginKit.CPUserContactType, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func resendPin(credentialType: CPLoginKit.CPUserContactType, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  @objc deinit
+}
+public protocol QRProtocol {
+  func jsonString() -> Swift.String?
+  func image(size: CoreGraphics.CGSize) -> UIKit.UIImage
+  var title: Swift.String { get }
+}
+public protocol StoreQRProtocol : CPFundsKit.QRProtocol {
+  var store: CPFundsKit.MerchantStore { get }
+}
+extension CPFundsKit.QRProtocol {
+  public func image(size: CoreGraphics.CGSize = CGSize(width: 500, height: 500)) -> UIKit.UIImage
+  public func generateQRCode(from string: Swift.String, size: CoreGraphics.CGSize = CGSize(width: 500, height: 500)) -> UIKit.UIImage
+  public func asynchImage(size: CoreGraphics.CGSize = CGSize(width: 500, height: 500), completion: ((UIKit.UIImage) -> ())?)
+  public func asynchGenerateQRCode(from string: Swift.String, size: CoreGraphics.CGSize = CGSize(width: 500, height: 500), completion: ((UIKit.UIImage) -> ())?)
+}
+public enum EventAmountType : Swift.CustomStringConvertible {
+  case open(goal: Swift.Double)
+  case fixed(goal: Swift.Double)
+  public var goal: Swift.Double {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  public var goalTitle: Swift.String {
+    get
+  }
+}
+public enum EventContributorStatus : Swift.String {
+  case all, accepted, declined, pending, paying
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum ContributingEventStatus : Swift.String, Swift.CustomStringConvertible {
+  case all
+  case pending
+  case contributing
+  case declined
+  case undetermined
+  public static func status(from index: Swift.Int) -> CPFundsKit.ContributingEventStatus?
+  public var statusIndex: Swift.Int {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum EventStatus : Swift.String, Swift.CustomStringConvertible {
+  case all
+  case active
+  case closed
+  case failed
+  case reached
+  case deleted
+  case undetermined
+  public static func status(from index: Swift.Int) -> CPFundsKit.EventStatus?
+  public var statusIndex: Swift.Int {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+  public var footerDescription: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum EventContributorsType : Swift.CustomStringConvertible {
+  case open
+  case fixed(invitees: Swift.Int)
+  public var invitees: Swift.Int {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class FundzEventCreator : CPFundsKit.EventCreator {
+  public static func loggedCreator() -> CPFundsKit.EventCreator?
+  public var username: Swift.String {
+    get
+  }
+  public var firstName: Swift.String {
+    get
+  }
+  public var lastName: Swift.String {
+    get
+  }
+  public var creatorId: Swift.String {
+    get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class AsuraPaymentDetails {
+  public var usedPoints: Swift.Int {
+    get
+  }
+  public var usedPointsAmount: Swift.Double {
+    get
+  }
+  public var creditCardAmount: Swift.Double {
+    get
+  }
+  public var totalAmount: Swift.Double {
+    get
+  }
+  public var cardPayments: [CPFundsKit.AsuraCreditCardPayment] {
+    get
+  }
+  @objc deinit
+}
+public protocol MerchantStoreAddress : Swift.Identifiable {
+  var id: Swift.Int { get }
+  var street1: Swift.String { get }
+  var street2: Swift.String { get }
+  var city: Swift.String { get }
+  var state: Swift.String { get }
+  var zipCode: Swift.String { get }
+  var country: Swift.String { get }
+  var isDefault: Swift.Bool { get }
+  var lat: Swift.Double { get }
+  var lon: Swift.Double { get }
+}
+@_hasMissingDesignatedInitializers final public class FundzMerchantStoreAddress : CPFundsKit.MerchantStoreAddress {
+  final public var id: Swift.Int {
+    get
+  }
+  final public var street1: Swift.String {
+    get
+  }
+  final public var street2: Swift.String {
+    get
+  }
+  final public var city: Swift.String {
+    get
+  }
+  final public var state: Swift.String {
+    get
+  }
+  final public var zipCode: Swift.String {
+    get
+  }
+  final public var country: Swift.String {
+    get
+  }
+  final public var isDefault: Swift.Bool {
+    get
+  }
+  final public var lat: Swift.Double {
+    get
+  }
+  final public var lon: Swift.Double {
+    get
+  }
+  public typealias ID = Swift.Int
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class FundzReward : CPFundsKit.Reward {
+  public var id: Swift.String {
+    get
+  }
+  public var name: Swift.String {
+    get
+  }
+  public var rewardDescription: Swift.String? {
+    get
+  }
+  public var redemptions: Swift.Int {
+    get
+  }
+  public var points: Swift.Int {
+    get
+  }
+  public static func == (lhs: CPFundsKit.FundzReward, rhs: CPFundsKit.FundzReward) -> Swift.Bool
+  public typealias ID = Swift.String
+  @objc deinit
+}
+extension CPFundsKit.FundzReward {
+  public static func mockRewards(below points: Swift.Int, amount: Swift.Int = 20) -> [CPFundsKit.FundzReward]
+  public static func mockReward(below points: Swift.Int = 5000) -> CPFundsKit.FundzReward
+}
+public struct UserInsurance {
+  public let name: Swift.String
+  public let memberId: Swift.String
+  public let valid: Swift.Bool
+  public let coinsurance: Swift.String
+  public let deductible: Swift.String
+  public let emergency: Swift.String
+  public let imgUrl: Swift.String
+  public let pcpSpec: Swift.String
+  public let rx: Swift.String
+  public let cardIssueDate: Swift.String
+  public init(name: Swift.String, memberId: Swift.String, image: Swift.String, coinsurace: Swift.String, deductible: Swift.String, emergency: Swift.String, pcpSpec: Swift.String, rx: Swift.String, cardIssueDate: Foundation.Date, valid: Swift.Bool)
+}
+public protocol MessagesController {
+  func deleteMessage(withId identifier: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func messageRead(_ id: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+}
+final public class FundzMessagesController : CPFundsKit.MessagesController {
+  public init()
+  final public func getMessages(with status: CPFundsKit.FundMessageStatus, pageSize: Swift.Int = 10, below: Swift.Int64? = nil, completion: ((Swift.Result<[CPFundsKit.RemoteFundzMessage], CPCoreKit.CPError>) -> ())?)
+  final public func deleteMessage(withId identifier: Swift.String, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func messageRead(_ identifier: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  @objc deinit
+}
+public struct FundzEventQr {
+  public let urlstring: Swift.String
+  public let eventid: Swift.String
+  public let url: Foundation.URL
+  public init?(qrString qrjson: Swift.String)
+}
+public protocol Event : AnyObject, Swift.CustomStringConvertible {
+  var timeZone: Foundation.TimeZone { get }
+  var creator: CPFundsKit.EventCreator { get }
+  var details: CPFundsKit.EventDetails? { get }
+  var status: CPFundsKit.EventStatus { get }
+  static func event(fromUrl url: Foundation.URL) -> CPFundsKit.Event?
+  var id: Swift.String { get }
+  var title: Swift.String { get }
+  var eventDescription: Swift.String { get }
+  var amountType: CPFundsKit.EventAmountType { get }
+  var contributorsType: CPFundsKit.EventContributorsType { get }
+  var expirationDate: Foundation.Date { get set }
+  var currentBalance: Swift.Double { get }
+  var goalAmount: Swift.Double { get }
+  var currentContributors: Swift.Int { get }
+  var numberOfInvitees: Swift.Int { get }
+  var dateCreated: Foundation.Date { get }
+  var lastUpdated: Foundation.Date { get }
+  var lastUpdatedRef: Swift.Int64 { get }
+  func equals(event: CPFundsKit.Event) -> Swift.Bool
+}
+extension CPFundsKit.Event {
+  public var isContributingEvent: Swift.Bool {
+    get
+  }
+  public var asContributingEvent: CPFundsKit.ContributingEvent? {
+    get
+  }
+}
+extension CPFundsKit.Event {
+  public var isFixed: Swift.Bool {
+    get
+  }
+}
+extension CPFundsKit.Event {
+  public var description: Swift.String {
+    get
+  }
+}
+extension CPFundsKit.Event {
+  public func equals(event: CPFundsKit.Event) -> Swift.Bool
+  public static func event(fromUrl url: Foundation.URL) -> CPFundsKit.Event?
+  public static func event(fromJsonString jsonString: Swift.String) -> CPFundsKit.FundzEvent?
+  public var json: CPCoreKit.CPJSON? {
+    get
+  }
+  public var jsonString: Swift.String? {
+    get
+  }
+}
+public protocol Appointment : Swift.CustomStringConvertible {
+  var id: Swift.Int { get }
+  var title: Swift.String { get }
+  var createDate: Foundation.Date? { get }
+  var message: Swift.String? { get }
+  var status: CPFundsKit.AppointmentStatus? { get }
+  var notes: Swift.String? { get }
+}
+extension CPFundsKit.Appointment {
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol FundzLoyaltyTransactionRecord {
+  associatedtype T : CPFundsKit.P2PContact
+  var transactionId: Swift.String { get }
+  var rewardName: Swift.String { get }
+  var code: Swift.String { get }
+  var date: Foundation.Date { get }
+  var amount: Swift.Int { get }
+  var campaignId: Swift.String { get }
+  var user: Self.T { get }
+}
+public protocol HistoryController {
+  associatedtype MR : CPFundsKit.MoneyRequest
+  associatedtype History : CPFundsKit.FundzTransactionHistory
+  associatedtype Transaction : CPFundsKit.FundzTransaction
+  func getTransaction(confirmationCode code: Swift.String, completion: ((Swift.Result<CPFundsKit.FundzTransactionRecord, CPCoreKit.CPError>) -> ())?)
+  func getP2PRequest(requestId: Swift.Int, completion: ((Swift.Result<Self.MR, CPCoreKit.CPError>) -> ())?)
+  func fetchFundzHistory(_ below: Swift.Double?, count: Swift.Int?, completion: ((Swift.Result<Self.History, CPCoreKit.CPError>) -> ())?)
+  func fetchFundzCustomerHistory(transactionType: CPFundsKit.FundzTransactionType?, page: Swift.Int, sortOrder: CPCoreKit.CPSortOrder, pageSize: Swift.Int, specificUser uuid: Swift.String?, completion: ((Swift.Result<Self.History, CPCoreKit.CPError>) -> ())?)
+}
+final public class FundzHistoryController : CPFundsKit.HistoryController {
+  public init()
+  public typealias History = CPFundsKit.FundzTransactionHistoryResult
+  public typealias Transaction = CPFundsKit.FundzTransactionRecord
+  public typealias MoneyRequest = CPFundsKit.FundzMoneyRequest
+  final public func getTransaction(confirmationCode code: Swift.String, completion: ((Swift.Result<CPFundsKit.FundzHistoryController.Transaction, CPCoreKit.CPError>) -> ())?)
+  final public func getP2PRequest(requestId: Swift.Int, completion: ((Swift.Result<CPFundsKit.FundzHistoryController.MoneyRequest, CPCoreKit.CPError>) -> ())?)
+  final public func fetchFundzHistory(_ below: Swift.Double?, count: Swift.Int?, completion: ((Swift.Result<CPFundsKit.FundzHistoryController.History, CPCoreKit.CPError>) -> ())?)
+  final public func fetchFundzCustomerHistory(transactionType: CPFundsKit.FundzTransactionType? = nil, page: Swift.Int, sortOrder: CPCoreKit.CPSortOrder = .descending, pageSize: Swift.Int = 10, specificUser uuid: Swift.String? = nil, completion: ((Swift.Result<CPFundsKit.FundzHistoryController.History, CPCoreKit.CPError>) -> ())?)
+  public typealias MR = CPFundsKit.FundzMoneyRequest
+  @objc deinit
+}
+public protocol FundzMerchantControllerProtocol {
+  associatedtype T : CPFundsKit.MoneyRequest
+  associatedtype History : CPFundsKit.FundzTransactionHistory
+  associatedtype Transaction : CPFundsKit.FundzTransaction
+  func getStores(completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  func getCompaniesList(completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  func getReport(forStore store: CPFundsKit.MerchantStore, range: CPCoreKit.ReportRange, qrId: Swift.String?, completion: ((Swift.Result<CPFundsKit.FundzMerchantSummary, CPCoreKit.CPError>) -> ())?)
+  func getMerchantStore(forId id: Swift.String, completion: ((Swift.Result<CPFundsKit.MerchantStoreQr, CPCoreKit.CPError>) -> ())?)
+  func getQRs(forStore store: CPFundsKit.MerchantStore, status: CPFundsKit.FundzQRStatus, completion: ((Swift.Result<[CPFundsKit.MerchantStoreQr], CPCoreKit.CPError>) -> ())?)
+  func createQr(forStore store: CPFundsKit.MerchantStore, label: Swift.String, status: CPFundsKit.FundzQRStatus, completion: ((Swift.Result<CPFundsKit.MerchantStoreQr, CPCoreKit.CPError>) -> ())?)
+  func updateQr(forStore store: CPFundsKit.MerchantStore, forQRWithId qrId: Swift.Int, label: Swift.String, status: CPFundsKit.FundzQRStatus, completion: ((Swift.Result<CPFundsKit.MerchantStoreQr, CPCoreKit.CPError>) -> ())?)
+  func payFundzMerchant(withCompanyCode code: Swift.String, amount: Swift.Double, qrId: Swift.String?, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getTransactionHistory(companyId id: Swift.Int, page: Swift.Int, dateRange: CPCoreKit.ReportRange, sortOrder: CPCoreKit.CPSortOrder, pageSize: Swift.Int, qrId: Swift.Int?, completion: ((Swift.Result<[CPFundsKit.FundzTransactionRecord], CPCoreKit.CPError>) -> ())?)
+  func requestMoneyFromConsumer(withUsername username: Swift.String, amount: Swift.Double, fromStore store: CPFundsKit.MerchantStore, notes: Swift.String?, completion: ((Swift.Result<Self.T, CPCoreKit.CPError>) -> ())?)
+  func getMoneyRequestActivity(filter: CPFundsKit.MoneyRequestRole?, status: CPFundsKit.MoneyRequestStatus, companyId: Swift.String, count: Swift.Int, below: Swift.Double?, completion: ((Swift.Result<[Self.T], CPCoreKit.CPError>) -> ())?)
+  func cancelTransaction(withId trxId: Swift.String, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func refundTransaction(withId trxId: Swift.String, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getRecentCustomers(for store: CPFundsKit.MerchantStore, completion: ((Swift.Result<[CPFundsKit.FundzP2PContact], CPCoreKit.CPError>) -> ())?)
+  func removeEmployee(withId id: Swift.String, store: CPFundsKit.MerchantStore, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  func getMerchantTransaction(confirmationCode code: Swift.String, completion: ((Swift.Result<Self.Transaction, CPCoreKit.CPError>) -> ())?)
+  func getMerchantMoneyRequest(requestId id: Swift.Int, store: CPFundsKit.MerchantStore, completion: ((Swift.Result<Self.T, CPCoreKit.CPError>) -> ())?)
+  func storePicture(_ picture: UIKit.UIImage, completion: ((Swift.Result<Swift.String, CPCoreKit.CPError>) -> ())?)
+}
+final public class FundzMerchantController : CPFundsKit.FundzMerchantControllerProtocol {
+  public init()
+  public typealias MR = CPFundsKit.FundzMoneyRequest
+  public typealias History = CPFundsKit.FundzTransactionHistoryResult
+  public typealias Transaction = CPFundsKit.FundzTransactionRecord
+  final public func getMerchantStore(forId id: Swift.String, completion: ((Swift.Result<CPFundsKit.MerchantStoreQr, CPCoreKit.CPError>) -> ())?)
+  final public func getStores(completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  final public func getReport(forStore store: CPFundsKit.MerchantStore, range: CPCoreKit.ReportRange, qrId: Swift.String?, completion: ((Swift.Result<CPFundsKit.FundzMerchantSummary, CPCoreKit.CPError>) -> ())?)
+  final public func getQRs(forStore store: CPFundsKit.MerchantStore, status: CPFundsKit.FundzQRStatus, completion: ((Swift.Result<[CPFundsKit.MerchantStoreQr], CPCoreKit.CPError>) -> ())?)
+  final public func createQr(forStore store: CPFundsKit.MerchantStore, label: Swift.String, status: CPFundsKit.FundzQRStatus, completion: ((Swift.Result<CPFundsKit.MerchantStoreQr, CPCoreKit.CPError>) -> ())?)
+  final public func updateQr(forStore store: CPFundsKit.MerchantStore, forQRWithId qrId: Swift.Int, label: Swift.String, status: CPFundsKit.FundzQRStatus, completion: ((Swift.Result<CPFundsKit.MerchantStoreQr, CPCoreKit.CPError>) -> ())?)
+  final public func payFundzMerchant(withCompanyCode code: Swift.String, amount: Swift.Double, qrId: Swift.String?, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getTransactionHistory(companyId id: Swift.Int, page: Swift.Int, dateRange: CPCoreKit.ReportRange, sortOrder: CPCoreKit.CPSortOrder = .descending, pageSize: Swift.Int = 10, qrId: Swift.Int? = nil, completion: ((Swift.Result<[CPFundsKit.FundzTransactionRecord], CPCoreKit.CPError>) -> ())?)
+  final public func requestMoneyFromConsumer(withUsername username: Swift.String, amount: Swift.Double, fromStore store: CPFundsKit.MerchantStore, notes: Swift.String?, completion: ((Swift.Result<CPFundsKit.FundzMerchantController.MR, CPCoreKit.CPError>) -> ())?)
+  final public func getMoneyRequestActivity(filter: CPFundsKit.MoneyRequestRole? = .sender, status: CPFundsKit.MoneyRequestStatus, companyId: Swift.String, count: Swift.Int = 10, below: Swift.Double? = nil, completion: ((Swift.Result<[CPFundsKit.FundzMerchantController.MR], CPCoreKit.CPError>) -> ())?)
+  final public func cancelTransaction(withId trxId: Swift.String, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func refundTransaction(withId trxId: Swift.String, amount: Swift.Double, notes: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func inviteEmployee(for companyId: Swift.String, name: Swift.String, last: Swift.String, email: Swift.String, title: Swift.String?, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getRecentCustomers(for store: CPFundsKit.MerchantStore, completion: ((Swift.Result<[CPFundsKit.FundzP2PContact], CPCoreKit.CPError>) -> ())?)
+  final public func getEmployees(for store: CPFundsKit.MerchantStore, completion: ((Swift.Result<[CPFundsKit.FundzMerchantEmployee], CPCoreKit.CPError>) -> ())?)
+  final public func removeEmployee(withId id: Swift.String, store: CPFundsKit.MerchantStore, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func inviteCustomer(with username: Swift.String, store: CPFundsKit.MerchantStore, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> ())?)
+  final public func getCompanySVAid(store: CPFundsKit.MerchantStore, completion: ((Swift.Result<CPPayKit.CPSVA, CPCoreKit.CPError>) -> ())?)
+  final public func getMerchantTransaction(confirmationCode code: Swift.String, completion: ((Swift.Result<CPFundsKit.FundzMerchantController.Transaction, CPCoreKit.CPError>) -> ())?)
+  final public func getMerchantMoneyRequest(requestId id: Swift.Int, store: CPFundsKit.MerchantStore, completion: ((Swift.Result<CPFundsKit.FundzMerchantController.MR, CPCoreKit.CPError>) -> ())?)
+  final public func getCompaniesList(completion: ((Swift.Result<[CPFundsKit.MerchantStore], CPCoreKit.CPError>) -> ())?)
+  final public func storePicture(_ picture: UIKit.UIImage, completion: ((Swift.Result<Swift.String, CPCoreKit.CPError>) -> ())?)
+  public typealias T = CPFundsKit.FundzMoneyRequest
+  @objc deinit
+}
+public protocol MerchantSummary : Swift.CustomStringConvertible {
+  var qrsSummary: CPFundsKit.FundzQRSummary { get }
+  var salesSummary: CPFundsKit.FundzSalesSummary { get }
+  var loyaltySummary: CPFundsKit.FundzLoyaltySummary { get }
+  var customersSummary: CPFundsKit.FundzCustomersSummary { get }
+  var merchantBalance: CPFundsKit.FundzMerchantBalance? { get }
+}
+extension CPFundsKit.MerchantSummary {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum SecondaryCredentialType {
+  case email(Swift.String?, validated: Swift.Bool)
+  case phone(Swift.String?, validated: Swift.Bool)
+  public var title: Swift.String {
+    get
+  }
+  public var value: Swift.String? {
+    get
+  }
+  public var validated: Swift.Bool {
+    get
+  }
+  public var isEmail: Swift.Bool {
+    get
+  }
+  public var isPhone: Swift.Bool {
+    get
+  }
+}
+public protocol UserProfile {
+  var imgUrlString: Swift.String? { get }
+  var imgUrl: Foundation.URL? { get }
+  var username: Swift.String { get }
+  var firstName: Swift.String { get }
+  var lastName: Swift.String { get }
+  var svaId: Swift.String { get }
+  var id: Swift.Int { get }
+  var addresses: [CPFundsKit.UserAddress] { get }
+  var balances: CPFundsKit.CPBalances { get }
+  var summary: CPFundsKit.UserSummary { get }
+  func getAvatar(_ completion: @escaping ((UIKit.UIImage?) -> ()))
+  var secondaryCredential: CPFundsKit.SecondaryCredentialType! { get }
+  var phone: Swift.String? { get }
+  var email: Swift.String? { get }
+  var validatedPhone: Swift.Bool { get }
+  var validatedEmail: Swift.Bool { get }
+  var birthday: Foundation.Date? { get }
+}
+public struct CPBalances : Swift.CustomStringConvertible {
+  public var availableBalance: Swift.Double
+  public var accountBalance: Swift.Double {
+    get
+  }
+  public var creditHoldBalance: Swift.Double {
+    get
+  }
+  public var holdBalance: Swift.Double {
+    get
+  }
+  public var description: Swift.String {
+    get
+  }
+}
+public protocol MerchantStore : Swift.CustomStringConvertible {
+  var logoUrl: Foundation.URL? { get }
+  var country: Swift.String { get }
+  var name: Swift.String { get }
+  var companyCode: Swift.String { get }
+  var companyId: Swift.Int { get }
+  var status: Swift.String { get }
+  static func fromMerchantQr(_ qr: CPFundsKit.MerchantStoreQr) -> CPFundsKit.MerchantStore
+  static func mock() -> CPFundsKit.FundzMerchantStore
+  func getLogo(fromUrl url: Foundation.URL, completion: @escaping ((UIKit.UIImage?) -> ()))
+  static func mockStore() -> CPFundsKit.MerchantStore
+}
+extension CPFundsKit.MerchantStore {
+  public var description: Swift.String {
+    get
+  }
+}
+extension CPFundsKit.MerchantStore {
+  public func getLogo(fromUrl url: Foundation.URL, completion: @escaping ((UIKit.UIImage?) -> ()))
+  public static func mockStore() -> CPFundsKit.MerchantStore
+}
+@_hasMissingDesignatedInitializers final public class FundzMerchantStore : CPFundsKit.MerchantStore {
+  final public var logoUrl: Foundation.URL? {
+    get
+  }
+  final public var country: Swift.String {
+    get
+  }
+  final public var name: Swift.String {
+    get
+  }
+  final public var companyCode: Swift.String {
+    get
+  }
+  final public var companyId: Swift.Int {
+    get
+  }
+  final public var status: Swift.String {
+    get
+  }
+  final public var detail: CPFundsKit.FundzMerchantStoreDetail? {
+    get
+  }
+  final public func setDetail(_ detail: CPFundsKit.FundzMerchantStoreDetail)
+  public static func fromMerchantQr(_ qr: CPFundsKit.MerchantStoreQr) -> CPFundsKit.MerchantStore
+  public static func mock() -> CPFundsKit.FundzMerchantStore
+  @objc deinit
+}
+public struct AsuraUserStatus {
+  public var needsEmailValidation: Swift.Bool {
+    get
+  }
+  public var isFullyRegistered: Swift.Bool {
+    get
+  }
+  public var hasSetHealthcare: Swift.Bool {
+    get
+  }
+  public var username: Swift.String {
+    get
+  }
+  public var canLogin: Swift.Bool {
+    get
+  }
+  public var isRegisteredInFundz: Swift.Bool {
+    get
+  }
+  public var isRegisteredInFundzOnly: Swift.Bool {
+    get
+  }
+  public static func completedRegistrationStatus(username: Swift.String) -> CPFundsKit.AsuraUserStatus
+  public static func mockStatus() -> CPFundsKit.AsuraUserStatus
+}
+@_hasMissingDesignatedInitializers public class FundzEventContributor {
+  public var username: Swift.String {
+    get
+  }
+  public var createdDate: Foundation.Date {
+    get
+  }
+  public var updatedDate: Foundation.Date {
+    get
+  }
+  public var id: Swift.String {
+    get
+  }
+  public var firstname: Swift.String {
+    get
+  }
+  public var lastname: Swift.String {
+    get
+  }
+  public var status: CPFundsKit.EventContributorStatus {
+    get
+  }
+  public var amount: Swift.Double {
+    get
+  }
+  public var compositeName: Swift.String {
+    get
+  }
+  @objc deinit
+}
+public protocol EventCreator : AnyObject, Swift.CustomStringConvertible {
+  var username: Swift.String { get }
+  var firstName: Swift.String { get }
+  var lastName: Swift.String { get }
+  var creatorId: Swift.String { get }
+  static func loggedCreator() -> CPFundsKit.EventCreator?
+}
+extension CPFundsKit.EventCreator {
+  public var description: Swift.String {
+    get
+  }
+}
+public enum AppointmentStatus : Swift.String {
+  case confirmed, expired, declined, scheduled
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+extension CPFundsKit.FundzQRStatus : Swift.Equatable {}
+extension CPFundsKit.FundzQRStatus : Swift.Hashable {}
+extension CPFundsKit.FundzQRStatus : Swift.RawRepresentable {}
+extension CPFundsKit.FundMessageStatus : Swift.Equatable {}
+extension CPFundsKit.FundMessageStatus : Swift.Hashable {}
+extension CPFundsKit.FundMessageStatus : Swift.RawRepresentable {}
+extension CPFundsKit.MoneyRequestAction : Swift.Equatable {}
+extension CPFundsKit.MoneyRequestAction : Swift.Hashable {}
+extension CPFundsKit.MoneyRequestRole : Swift.Equatable {}
+extension CPFundsKit.MoneyRequestRole : Swift.Hashable {}
+extension CPFundsKit.MoneyRequestStatus : Swift.Equatable {}
+extension CPFundsKit.MoneyRequestStatus : Swift.Hashable {}
+extension CPFundsKit.FundzTransactionSubtype : Swift.Equatable {}
+extension CPFundsKit.FundzTransactionSubtype : Swift.Hashable {}
+extension CPFundsKit.FundzTransactionSubtype : Swift.RawRepresentable {}
+extension CPFundsKit.KYCStatus : Swift.Equatable {}
+extension CPFundsKit.KYCStatus : Swift.Hashable {}
+extension CPFundsKit.KYCStatus : Swift.RawRepresentable {}
+extension CPFundsKit.BankTransactionType : Swift.Equatable {}
+extension CPFundsKit.BankTransactionType : Swift.Hashable {}
+extension CPFundsKit.FundzEvent : CPFundsKit.Event {}
+extension CPFundsKit.FundzMessageType : Swift.RawRepresentable {}
+extension CPFundsKit.KardStatus : Swift.Equatable {}
+extension CPFundsKit.KardStatus : Swift.Hashable {}
+extension CPFundsKit.KardStatus : Swift.RawRepresentable {}
+extension CPFundsKit.MerchantEmployeeStatus : Swift.Equatable {}
+extension CPFundsKit.MerchantEmployeeStatus : Swift.Hashable {}
+extension CPFundsKit.MerchantEmployeeStatus : Swift.RawRepresentable {}
+extension CPFundsKit.EventContributorStatus : Swift.Equatable {}
+extension CPFundsKit.EventContributorStatus : Swift.Hashable {}
+extension CPFundsKit.EventContributorStatus : Swift.RawRepresentable {}
+extension CPFundsKit.ContributingEventStatus : Swift.Equatable {}
+extension CPFundsKit.ContributingEventStatus : Swift.Hashable {}
+extension CPFundsKit.ContributingEventStatus : Swift.RawRepresentable {}
+extension CPFundsKit.EventStatus : Swift.Equatable {}
+extension CPFundsKit.EventStatus : Swift.Hashable {}
+extension CPFundsKit.EventStatus : Swift.RawRepresentable {}
+extension CPFundsKit.AppointmentStatus : Swift.Equatable {}
+extension CPFundsKit.AppointmentStatus : Swift.Hashable {}
+extension CPFundsKit.AppointmentStatus : Swift.RawRepresentable {}

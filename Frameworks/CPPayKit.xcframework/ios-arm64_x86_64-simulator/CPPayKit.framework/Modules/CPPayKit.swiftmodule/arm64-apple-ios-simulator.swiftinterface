@@ -1,0 +1,815 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target arm64-apple-ios13.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -Onone -module-name CPPayKit
+import CPCloudKit
+import CPCoreKit
+import CPLoginKit
+@_exported import CPPayKit
+import Foundation
+import Swift
+import UIKit
+import WebKit
+import _Concurrency
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc final public class CPCreditCard : ObjectiveC.NSObject, CPPayKit.CPMoneyContainer {
+  @objc override final public var description: Swift.String {
+    @objc get
+  }
+  public typealias T = CPPayKit.CPCreditCard
+  final public var status: CPPayKit.CPMoneyContainerStatus {
+    get
+  }
+  final public let cardType: CPPayKit.CPCardType
+  final public var id: Swift.Int {
+    get
+  }
+  final public var containerType: CPPayKit.CPMoneyContainerType {
+    get
+  }
+  final public var attributes: [Swift.String : Swift.String] {
+    get
+  }
+  public static func == (lhs: CPPayKit.CPCreditCard, rhs: CPPayKit.CPCreditCard) -> Swift.Bool
+  final public var _cardImage: UIKit.UIImage?
+  final public var accountName: Swift.String {
+    get
+  }
+  final public var accountDescription: Swift.String {
+    get
+  }
+  final public var last4Digits: Swift.String {
+    get
+  }
+  final public var expirationYear: Swift.String {
+    get
+  }
+  final public var expirationMonth: Swift.String {
+    get
+  }
+  final public var cardHolder: Swift.String {
+    get
+  }
+  final public var addedDate: Foundation.Date {
+    get
+  }
+  final public var expirationDate: Foundation.Date {
+    get
+  }
+  final public var isDefault: Swift.Bool {
+    get
+  }
+  final public var currency: CPPayKit.CPCurrency {
+    get
+  }
+  @objc final public func isValid() -> Swift.Bool
+  public init?(fromJson j: CPCoreKit.CPJSON)
+  @objc convenience public init(accountName: Swift.String, accountDescription: Swift.String, accountNumber: Swift.String, expirationMonth: Swift.String, expirationYear: Swift.String, cvv: Swift.String, cardHolder: Swift.String, isDefault: Swift.Bool, currencyNumber number: Swift.String, attributes: [Swift.String : Swift.String]?, addedDate: Foundation.Date = Date())
+  @objc deinit
+}
+extension CPPayKit.CPCreditCard {
+  final public func cardImage() -> UIKit.UIImage?
+}
+public enum CPMoneyContainerType : Swift.String {
+  case SVA
+  case CC
+  case BANK_ACCOUNT
+  case invalid
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum CPPersonType : Swift.String {
+  case boxOwner
+  case serviceOwner
+  case companyUser
+  case subscriber
+  case entity
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum CPTransactionType : Swift.String, Swift.CustomStringConvertible {
+  case depositToSVA
+  case transferToPerson
+  case transferBetweenAccounts
+  case transferToBankAccount
+  case transferFromBankAccount
+  case redeemReward
+  case addBalance
+  case airTime
+  case remittance
+  case loyalty
+  case offers
+  case caseInCorrespondent
+  case purchase
+  case loadCard
+  case cashInSVAAgent
+  case svaWithdrawAgent
+  case debit
+  case distributeStoreValue
+  case sendMoney2MTCode
+  case sendMoneyToMTCodeAtCorrespondent
+  case enCashMtCode
+  case enCashMTCodeAtCorrespondent
+  case loadSVAFromCreditCard
+  case mVaultBySVAAgent
+  case mVaultByCorrespondent
+  case redeemOffer
+  case positiveAdjustmentTransfer
+  case billPay
+  case confirmBank
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum CPCardType {
+  case amex
+  case diners
+  case discover
+  case jcb
+  case masterCard
+  case visa
+  case other
+  case invalidType
+  public static func cardType(from stringType: Swift.String) -> CPPayKit.CPCardType
+  public func stringValue() -> Swift.String
+  public func humanReadableName() -> Swift.String
+  public static func == (a: CPPayKit.CPCardType, b: CPPayKit.CPCardType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public enum CardState {
+  case identified(CPPayKit.CPCardType)
+  case indeterminate([CPPayKit.CPCardType])
+  case invalid
+}
+extension CPPayKit.CardState : Swift.Equatable {
+}
+public func == (lhs: CPPayKit.CardState, rhs: CPPayKit.CardState) -> Swift.Bool
+extension CPPayKit.CardState {
+  public init(fromNumber number: Swift.String)
+  public init(fromPrefix prefix: Swift.String)
+}
+extension CPPayKit.CPCardType {
+  public static func cardType(for token: Swift.String?) -> CPPayKit.CPCardType
+}
+public struct CPTransactionParticipantDetails {
+  public let moneyContainerId: Swift.Int
+  public let moneyContainerNumber: Swift.String
+  public let initialBalance: Swift.Double
+  public let amount: Swift.Double
+  public let newBalance: Swift.Double
+  public let participantRole: CPPayKit.CPTransactionRole
+  public let amountSign: CPPayKit.CPTransactionSign
+  public let currency: CPPayKit.CPCurrency
+  public let participantType: CPPayKit.CPPersonType
+  public let moneyContainerType: CPPayKit.CPMoneyContainerType
+}
+extension UIKit.UIColor {
+  public class func hexStr(hexStr: Foundation.NSString, alpha: CoreGraphics.CGFloat) -> UIKit.UIColor
+}
+@_inheritsConvenienceInitializers @objc public class CPCardTokenizer : ObjectiveC.NSObject, CPPayKit.CPCardHandler {
+  @objc public func add(_ card: CPPayKit.CPCreditCard, refetch: Swift.Bool, delegate: CPPayKit.CardCollectDelegate?, onSuccess: (() -> ())?, onFailure: (() -> ())?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias ReceiptAndSVA = (receipt: CPPayKit.CPTransactionReceipt, svaUsed: CPPayKit.CPSVA)
+public typealias ReceiptAndContainerID = (receipt: CPPayKit.CPTransactionReceipt, svaIdUsed: Swift.Int)
+public struct CPTransactions {
+  public init(queue: Foundation.OperationQueue? = nil)
+  public func transactionHistory(type: CPPayKit.CPTransactionLookupType, resultsPerPage max: Swift.Int, pageNumber offset: Swift.Int, sortType sort: CPPayKit.CPSort, dateFilter filter: CPPayKit.CPDateFilter, completion: ((Swift.Result<[CPPayKit.CPTransaction], CPCoreKit.CPError>) -> ())?)
+  public func transferAmount(amount: Swift.Double, from: CPPayKit.CPSVA, to: CPPayKit.CPSVA, completion: ((Swift.Result<CPPayKit.CPTransactionReceipt, CPCoreKit.CPError>) -> ())?)
+  public func transferBetweenContainers(_ amount: Swift.Double, from: CPPayKit.CPMoneyContainer, to: CPPayKit.CPMoneyContainer, completion: ((Swift.Result<CPPayKit.CPTransactionReceipt, CPCoreKit.CPError>) -> ())?)
+  public func loadSVAFromCreditCard(amount: Swift.Double, cardid: Swift.String, svaid: Swift.String, completion: ((Swift.Result<CPPayKit.CPTransactionReceipt, CPCoreKit.CPError>) -> ())?)
+  public func sendMoneyToUser(withUsername username: Swift.String, amount: Swift.Double, fromSVA: CPPayKit.CPSVA, completion: ((Swift.Result<CPPayKit.CPTransactionReceipt, CPCoreKit.CPError>) -> ())?)
+  public func getDetails(for transaction: CPPayKit.CPTransactionReceipt, completion: ((Swift.Result<CPPayKit.CPTransactionDetails, CPCoreKit.CPError>) -> ())?)
+  public func getDetails(for confirmationCode: Swift.String, completion: ((Swift.Result<CPPayKit.CPTransactionDetails, CPCoreKit.CPError>) -> ())?)
+  public func getDetails(for transaction: CPPayKit.CPTransaction, completion: ((Swift.Result<CPPayKit.CPTransactionDetails, CPCoreKit.CPError>) -> ())?)
+  public func transferAmount(_ amount: Swift.Double, toUserSVA SVA: CPPayKit.CPSVA, fromCard card: CPPayKit.CPCreditCard, inCurrency currency: CPPayKit.CPCurrency, pin: Swift.String? = nil, completion: ((Swift.Result<CPPayKit.ReceiptAndSVA, CPCoreKit.CPError>) -> ())?)
+  public func payMerchant(withCompanyCode code: Swift.String, withCreditCardWithId cardId: Swift.Int, amount: Swift.Double, currency: CPPayKit.CPCurrency, pin: Swift.String, usingSVAid usingsvaid: Swift.Int?, completion: ((Swift.Result<CPPayKit.ReceiptAndSVA, CPCoreKit.CPError>) -> ())?)
+  public func payMerchant(withCompany code: Swift.String, amount: Swift.Double, containerId: Swift.Int, completion: ((Swift.Result<CPPayKit.ReceiptAndContainerID, CPCoreKit.CPError>) -> ())?)
+}
+@objc @_inheritsConvenienceInitializers @_Concurrency.MainActor(unsafe) public class CPCardCollectController : UIKit.UINavigationController {
+  @_Concurrency.MainActor(unsafe) public static func controllerClassWithDelegate(_ delegate: CPPayKit.CardCollectDelegate?, refetching: Swift.Bool = false, barTinColor: UIKit.UIColor? = nil, tintColor: UIKit.UIColor? = nil) -> CPPayKit.CPCardCollectController
+  @available(iOS 5.0, *)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(navigationBarClass: Swift.AnyClass?, toolbarClass: Swift.AnyClass?)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(rootViewController: UIKit.UIViewController)
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @_Concurrency.MainActor(unsafe) @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers final public class CPPay {
+  public static var shared: CPPayKit.CPPay {
+    get
+  }
+  public static func setPushToken(_ tokenString: Swift.String)
+  @objc deinit
+}
+public struct CPMoneyContainers {
+  public init(queue: Foundation.OperationQueue? = nil)
+  public func addSVA(named name: Swift.String, customAttributes attributes: [Swift.String : Swift.String]?, setAsDefault isDefault: Swift.Bool, completion: ((Swift.Result<CPPayKit.CPSVA, CPCoreKit.CPError>) -> Swift.Void)?)
+  public func verifyBankAccount(_ bankAccount: CPPayKit.CPBankAccount, firstAmount amount1: Swift.Double, secondAmount amount2: Swift.Double, completion: ((Swift.Result<CPPayKit.CPBankAccount, CPCoreKit.CPError>) -> ())?)
+  public func addBankAccount(addBankObject: CPPayKit.CPAddBankRequestObject, storeId: Swift.Int? = nil, completion: ((Swift.Result<CPPayKit.CPBankAccount, CPCoreKit.CPError>) -> Swift.Void)?)
+  public func setAsDefault(_ moneyCotainer: CPPayKit.CPMoneyContainer, completion: ((Swift.Result<CPPayKit.CPMoneyContainer, CPCoreKit.CPError>) -> Swift.Void)?)
+  public func getCreditCards(status: CPPayKit.CPMoneyContainerStatus? = nil, completion: ((Swift.Result<[CPPayKit.CPCreditCard], CPCoreKit.CPError>) -> Swift.Void)?)
+  public func getBankAccounts(storeId: Swift.Int? = nil, status: CPPayKit.CPMoneyContainerStatus? = nil, completion: ((Swift.Result<[CPPayKit.CPBankAccount], CPCoreKit.CPError>) -> Swift.Void)?)
+  public func getMoneyContainers(filter: [CPPayKit.MoneyContainerFetchFilter], status: CPPayKit.CPMoneyContainerStatus? = nil, completion: ((Swift.Result<[CPPayKit.CPMoneyContainer], CPCoreKit.CPError>) -> Swift.Void)?)
+  public func removeMoneyContainer(_ container: CPPayKit.CPMoneyContainer, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> Swift.Void)?)
+  public func removeMoneyContainer(withId containerId: Swift.Int, completion: ((Swift.Result<Swift.Void, CPCoreKit.CPError>) -> Swift.Void)?)
+}
+public enum CPMoneyContainerStatus : Swift.CustomStringConvertible {
+  case pending
+  case active
+  case failed
+  case deleted
+  case pendingConfirmation
+  case bankConfirmationFailed
+  case bankACHProcessingFailed
+  public var description: Swift.String {
+    get
+  }
+  public static func == (a: CPPayKit.CPMoneyContainerStatus, b: CPPayKit.CPMoneyContainerStatus) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+@objc public protocol CardCollectDelegate {
+  @objc func cardCollectControllerWillDismiss()
+  @objc func cardCollectControllerDidDismiss()
+  @objc func cardCollectControllerDidAddCard(_ card: CPPayKit.CPCreditCard)
+  @objc func cardCollectControllerDidAddCardWithUpdatedCards(_ cards: [CPPayKit.CPCreditCard])
+  @objc func cardCollectControllerDidFailWithMessage(_ message: Swift.String)
+}
+public struct CPTransactionDetails {
+  public let participants: [CPPayKit.CPTransactionParticipant]
+  public let currency: CPPayKit.CPCurrency
+  public let recipientContainerId: Swift.Int
+  public let transactionType: CPPayKit.CPTransactionType
+  public let status: CPPayKit.CPTransactionStatus
+  public let transactionAmount: Swift.Double
+  public let recipientAmount: Swift.Double
+  public let feeCurrency: CPPayKit.CPCurrency
+  public let confirmationId: Swift.String
+  public let tenant: Swift.String
+  public let senderName: Swift.String
+  public let callerId: Swift.String
+  public let description: Swift.String
+  public let transactionCreationDate: Foundation.Date
+  public let senderContainerId: Swift.Int
+}
+public protocol CPCurrencyProtocol {
+  var code: Swift.String { get }
+  var number: Swift.String { get }
+  var decimals: Swift.Int { get }
+  var currencyDescription: Swift.String { get }
+}
+public enum CPTransactionLookupType {
+  case byMerchantID(Swift.String)
+  case all
+}
+public struct CPAttribute {
+  public let key: Swift.String
+  public let value: Swift.String
+}
+public struct CPSVABalance : Swift.Equatable, Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+  public var balance: Swift.Double {
+    get
+  }
+  public var currency: CPPayKit.CPCurrency {
+    get
+  }
+  public var containerId: Swift.Int {
+    get
+  }
+  public var availableBalance: Swift.Double {
+    get
+  }
+  public var tenantName: Swift.String {
+    get
+  }
+  public var date: Foundation.Date {
+    get
+  }
+  public static func == (lhs: CPPayKit.CPSVABalance, rhs: CPPayKit.CPSVABalance) -> Swift.Bool
+}
+@_inheritsConvenienceInitializers @objc final public class CPConfigutationBridge : ObjectiveC.NSObject {
+  @objc public static func currentCurrencyNumber() -> Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+public class CPMerchantPayment {
+  public init(containerId: Swift.String, amount: Swift.String, currencyNumber: Swift.String, merchantId: Swift.String)
+  @objc deinit
+}
+public struct CardImages {
+  public static func fromCardType(_ cardType: CPPayKit.CPCardType) -> UIKit.UIImage?
+  public static func fromCardName(_ name: Swift.String) -> UIKit.UIImage?
+}
+public struct CPTransaction {
+  public let id: Swift.Int
+  public let confirmationCode: Swift.String
+  public let transactionType: CPPayKit.CPTransactionType
+  public let transactionDate: Foundation.Date
+  public let transactionStatus: CPPayKit.CPTransactionStatus
+  public let transactionAmount: Swift.Double
+  public let participants: [CPPayKit.CPTransactionParticipant]
+  public var details: CPPayKit.CPTransactionDetails? {
+    get
+  }
+}
+public protocol CPMoneyContainer : Swift.CustomStringConvertible {
+  var id: Swift.Int { get }
+  var isDefault: Swift.Bool { get }
+  var containerType: CPPayKit.CPMoneyContainerType { get }
+  var currency: CPPayKit.CPCurrency { get }
+  var attributes: [Swift.String : Swift.String] { get }
+  func equals(_ mc: CPPayKit.CPMoneyContainer) -> Swift.Bool
+  var status: CPPayKit.CPMoneyContainerStatus { get }
+}
+extension CPPayKit.CPMoneyContainer {
+  public var description: Swift.String {
+    get
+  }
+  public func equals(_ mc: CPPayKit.CPMoneyContainer) -> Swift.Bool
+}
+public enum CPSort : Swift.String {
+  case ascending
+  case descending
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc extension UIKit.UIViewController {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func presentAlertControllerWithTitle(_ title: Swift.String?, message: Swift.String, cancelTitle: Swift.String?, completionTitle: Swift.String?, completion: (() -> ())?)
+}
+extension UIKit.UIViewController {
+  @_Concurrency.MainActor(unsafe) public class func instantiateFromStoryboard(_ name: Swift.String = "Main") -> Self
+}
+extension Swift.Array where Element == CPPayKit.CPTransactionParticipant {
+  public func participantWithRole(_ role: CPPayKit.CPTransactionRole) -> CPPayKit.CPTransactionParticipant?
+}
+public protocol CCCardCollectorDelegate : AnyObject {
+  func cardCollector(collector: UIKit.UIViewController, didFailWithError error: CPCoreKit.CPError)
+  func cardCollector(collector: UIKit.UIViewController, didAddCard: CPPayKit.CPCreditCard)
+  func cardCollector(collector: UIKit.UIViewController, completedWith cards: [CPPayKit.CPCreditCard])
+}
+@objc @_hasMissingDesignatedInitializers @_Concurrency.MainActor(unsafe) public class CCCardCollector : UIKit.UINavigationController {
+  @_Concurrency.MainActor(unsafe) public var refetches: Swift.Bool
+  @_Concurrency.MainActor(unsafe) weak public var cardControllerDelegate: CPPayKit.CCCardCollectorDelegate?
+  @_Concurrency.MainActor(unsafe) public init(controllerDelegate: CPPayKit.CCCardCollectorDelegate?, refetchAfterAdd refetching: Swift.Bool)
+  @_Concurrency.MainActor(unsafe) public func style(_ color: UIKit.UIColor)
+  @objc deinit
+}
+public enum CPBankAccountType : Swift.String {
+  case checking, savings
+  public static func accountFromSubtype(_ s: Swift.String) -> CPPayKit.CPBankAccountType
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+@objc @_hasMissingDesignatedInitializers public class CPBankAccount : ObjectiveC.NSObject, CPPayKit.CPMoneyContainer, Swift.Identifiable {
+  public static func mockAccount() -> CPPayKit.CPBankAccount
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  public var id: Swift.Int {
+    get
+  }
+  public var containerType: CPPayKit.CPMoneyContainerType {
+    get
+  }
+  public var last4Digits: Swift.String {
+    get
+  }
+  public var accountSubtype: CPPayKit.CPBankAccountType {
+    get
+  }
+  public var isDefault: Swift.Bool {
+    get
+  }
+  public var accountName: Swift.String {
+    get
+  }
+  public var currency: CPPayKit.CPCurrency {
+    get
+  }
+  public var accountDescription: Swift.String? {
+    get
+  }
+  public var accountHolderFullName: Swift.String {
+    get
+  }
+  public var attributes: [Swift.String : Swift.String] {
+    get
+  }
+  public var routingNumber: Swift.String {
+    get
+  }
+  public var addedDate: Foundation.Date {
+    get
+  }
+  public var attributesSecureRetrievable: [Swift.String : Swift.String] {
+    get
+  }
+  public var status: CPPayKit.CPMoneyContainerStatus {
+    get
+  }
+  public init(id: Swift.Int, last4: Swift.String, accountName: Swift.String, accountHolderFullName: Swift.String, accountDescription: Swift.String?, routingNumber: Swift.String)
+  public typealias ID = Swift.Int
+  @objc deinit
+}
+extension CPPayKit.CPBankAccount {
+  public static func bankObject(accountNumber: Swift.String?, accountName: Swift.String?, routingNumber: Swift.String?, customerFullName: Swift.String?, isDefault: Swift.Bool, bankAccountType: CPPayKit.CPBankAccountType, accountDescription: Swift.String) -> CPPayKit.CPAddBankRequestObject?
+}
+public struct CPAddBankRequestObject {
+  public var accountNumber: Swift.String {
+    get
+  }
+  public var accountName: Swift.String {
+    get
+  }
+  public var routingNumber: Swift.String {
+    get
+  }
+  public var customerFullName: Swift.String {
+    get
+  }
+  public var bankAccountType: CPPayKit.CPBankAccountType {
+    get
+  }
+  public var isDefault: Swift.Bool {
+    get
+  }
+  public let containerType: CPPayKit.CPMoneyContainerType
+  public var currency: CPPayKit.CPCurrency {
+    get
+  }
+  public var accountDescription: Swift.String? {
+    get
+  }
+  public let addedDate: Foundation.Date
+  public init?(accountNumber: Swift.String?, accountName: Swift.String?, routingNumber: Swift.String?, customerFullName: Swift.String?, isDefault: Swift.Bool, bankAccountType: CPPayKit.CPBankAccountType?, accountDescription: Swift.String?)
+}
+public enum CPTransactionRole : Swift.String {
+  case sender
+  case caller
+  case receiver
+  case cashier
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public enum MoneyContainerFetchFilter : Swift.String {
+  case SVA
+  case CC
+  case BankAccount
+  case all
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public typealias CPDateRange = (from: Foundation.Date, to: Foundation.Date)
+public enum CPDateFilter {
+  case byDay(Foundation.Date)
+  case byRange(CPPayKit.CPDateRange)
+  case none
+}
+@objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @IBDesignable @_Concurrency.MainActor(unsafe) public class CreditCardFormView : UIKit.UIView {
+  @IBInspectable @objc @_Concurrency.MainActor(unsafe) public var cardHolderString: Swift.String {
+    @objc get
+    @objc set
+  }
+  @_Concurrency.MainActor(unsafe) @objc override dynamic public func layoutSubviews()
+  @objc @_Concurrency.MainActor(unsafe) public func paymentCardTextFieldDidChange(cardNumber: Swift.String? = "", expirationYear: Swift.UInt, expirationMonth: Swift.UInt, cvc: Swift.String? = "")
+  @objc @_Concurrency.MainActor(unsafe) public func paymentCardTextFieldDidEndEditingExpiration(expirationYear: Swift.UInt)
+  @objc @_Concurrency.MainActor(unsafe) public func paymentCardTextFieldDidBeginEditingCVC()
+  @objc @_Concurrency.MainActor(unsafe) public func paymentCardTextFieldDidEndEditingCVC()
+  @objc deinit
+}
+@objc extension CPPayKit.CreditCardFormView {
+  @objc @_Concurrency.MainActor(unsafe) dynamic public func didChangeCardholderName(_ name: Swift.String)
+}
+public struct CPCurrency : CPPayKit.CPCurrencyProtocol, Swift.Equatable {
+  public var code: Swift.String {
+    get
+  }
+  public var number: Swift.String {
+    get
+  }
+  public var decimals: Swift.Int {
+    get
+  }
+  public var currencyDescription: Swift.String {
+    get
+  }
+  public static func == (lhs: CPPayKit.CPCurrency, rhs: CPPayKit.CPCurrency) -> Swift.Bool
+}
+@_inheritsConvenienceInitializers @objc public class CPCardConnectHandler : ObjectiveC.NSObject, CPPayKit.CPCardHandler {
+  @objc public func add(_ card: CPPayKit.CPCreditCard, refetch: Swift.Bool, delegate: CPPayKit.CardCollectDelegate?, onSuccess: (() -> ())?, onFailure: (() -> ())?)
+  public func addCard(_ card: CPPayKit.CPCreditCard, refetch: Swift.Bool, delegate: CPPayKit.CardCollectDelegate?, onSuccess: (() -> ())?, onFailure: (() -> ())?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Swift.Array where Element == CPPayKit.CPMoneyContainer {
+  public var SVAs: [CPPayKit.CPSVA] {
+    get
+  }
+  public var CreditCards: [CPPayKit.CPCreditCard] {
+    get
+  }
+  public var BankAccounts: [CPPayKit.CPBankAccount] {
+    get
+  }
+  public func containerWithId(_ id: Swift.Int) -> CPPayKit.CPMoneyContainer?
+  public func svaWithId(_ id: Swift.Int) -> CPPayKit.CPSVA?
+  public func creditCardWithId(_ id: Swift.Int) -> CPPayKit.CPSVA?
+}
+public enum CPTransactionStatus : Swift.String, Swift.CustomStringConvertible {
+  case notStarted
+  case inProgress
+  case pending
+  case completed
+  case failed
+  case error
+  case aborted
+  case canceled
+  case unknown
+  public static func status(fromRawValue v: Swift.String) -> CPPayKit.CPTransactionStatus
+  public var description: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct CPTransactionReceipt {
+  public let confirmationDate: Foundation.Date
+  public let cofirmationId: Swift.String
+  public let timeStamp: Swift.String
+  public let transactionId: Swift.String
+}
+public enum CPTransactionSign : Swift.String {
+  case credited
+  case debited
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct CPTransactionParticipant {
+  public let participantId: Swift.String
+  public let participantType: CPPayKit.CPPersonType
+  public let participantRole: CPPayKit.CPTransactionRole
+  public let participantName: Swift.String
+  public var details: CPPayKit.CPTransactionParticipantDetails? {
+    get
+  }
+}
+public struct CPCurrencies {
+  public static func currencyForNumber(_ n: Swift.String) -> CPPayKit.CPCurrency?
+  public static var allCurrencies: [CPPayKit.CPCurrency]
+  public static var AED: CPPayKit.CPCurrency
+  public static var AFN: CPPayKit.CPCurrency
+  public static var ALL: CPPayKit.CPCurrency
+  public static var AMD: CPPayKit.CPCurrency
+  public static var ANG: CPPayKit.CPCurrency
+  public static var AOA: CPPayKit.CPCurrency
+  public static var ARS: CPPayKit.CPCurrency
+  public static var AUD: CPPayKit.CPCurrency
+  public static var AWG: CPPayKit.CPCurrency
+  public static var AZN: CPPayKit.CPCurrency
+  public static var BAM: CPPayKit.CPCurrency
+  public static var BBD: CPPayKit.CPCurrency
+  public static var BDT: CPPayKit.CPCurrency
+  public static var BGN: CPPayKit.CPCurrency
+  public static var BHD: CPPayKit.CPCurrency
+  public static var BIF: CPPayKit.CPCurrency
+  public static var BMD: CPPayKit.CPCurrency
+  public static var BND: CPPayKit.CPCurrency
+  public static var BOB: CPPayKit.CPCurrency
+  public static var BOV: CPPayKit.CPCurrency
+  public static var BRL: CPPayKit.CPCurrency
+  public static var BSD: CPPayKit.CPCurrency
+  public static var BTN: CPPayKit.CPCurrency
+  public static var BWP: CPPayKit.CPCurrency
+  public static var BYN: CPPayKit.CPCurrency
+  public static var BZD: CPPayKit.CPCurrency
+  public static var CAD: CPPayKit.CPCurrency
+  public static var CDF: CPPayKit.CPCurrency
+  public static var CHE: CPPayKit.CPCurrency
+  public static var CHF: CPPayKit.CPCurrency
+  public static var CHW: CPPayKit.CPCurrency
+  public static var CLF: CPPayKit.CPCurrency
+  public static var CLP: CPPayKit.CPCurrency
+  public static var CNY: CPPayKit.CPCurrency
+  public static var COP: CPPayKit.CPCurrency
+  public static var COU: CPPayKit.CPCurrency
+  public static var CRC: CPPayKit.CPCurrency
+  public static var CUC: CPPayKit.CPCurrency
+  public static var CUP: CPPayKit.CPCurrency
+  public static var CVE: CPPayKit.CPCurrency
+  public static var CZK: CPPayKit.CPCurrency
+  public static var DJF: CPPayKit.CPCurrency
+  public static var DKK: CPPayKit.CPCurrency
+  public static var DOP: CPPayKit.CPCurrency
+  public static var DZD: CPPayKit.CPCurrency
+  public static var EGP: CPPayKit.CPCurrency
+  public static var ERN: CPPayKit.CPCurrency
+  public static var ETB: CPPayKit.CPCurrency
+  public static var EUR: CPPayKit.CPCurrency
+  public static var FJD: CPPayKit.CPCurrency
+  public static var FKP: CPPayKit.CPCurrency
+  public static var GBP: CPPayKit.CPCurrency
+  public static var GEL: CPPayKit.CPCurrency
+  public static var GHS: CPPayKit.CPCurrency
+  public static var GIP: CPPayKit.CPCurrency
+  public static var GMD: CPPayKit.CPCurrency
+  public static var GNF: CPPayKit.CPCurrency
+  public static var GTQ: CPPayKit.CPCurrency
+  public static var GYD: CPPayKit.CPCurrency
+  public static var HKD: CPPayKit.CPCurrency
+  public static var HNL: CPPayKit.CPCurrency
+  public static var HRK: CPPayKit.CPCurrency
+  public static var HTG: CPPayKit.CPCurrency
+  public static var HUF: CPPayKit.CPCurrency
+  public static var IDR: CPPayKit.CPCurrency
+  public static var ILS: CPPayKit.CPCurrency
+  public static var INR: CPPayKit.CPCurrency
+  public static var IQD: CPPayKit.CPCurrency
+  public static var IRR: CPPayKit.CPCurrency
+  public static var ISK: CPPayKit.CPCurrency
+  public static var JMD: CPPayKit.CPCurrency
+  public static var JOD: CPPayKit.CPCurrency
+  public static var JPY: CPPayKit.CPCurrency
+  public static var KES: CPPayKit.CPCurrency
+  public static var KGS: CPPayKit.CPCurrency
+  public static var KHR: CPPayKit.CPCurrency
+  public static var KMF: CPPayKit.CPCurrency
+  public static var KPW: CPPayKit.CPCurrency
+  public static var KRW: CPPayKit.CPCurrency
+  public static var KWD: CPPayKit.CPCurrency
+  public static var KYD: CPPayKit.CPCurrency
+  public static var KZT: CPPayKit.CPCurrency
+  public static var LAK: CPPayKit.CPCurrency
+  public static var LBP: CPPayKit.CPCurrency
+  public static var LKR: CPPayKit.CPCurrency
+  public static var LRD: CPPayKit.CPCurrency
+  public static var LSL: CPPayKit.CPCurrency
+  public static var LYD: CPPayKit.CPCurrency
+  public static var MAD: CPPayKit.CPCurrency
+  public static var MDL: CPPayKit.CPCurrency
+  public static var MGA: CPPayKit.CPCurrency
+  public static var MKD: CPPayKit.CPCurrency
+  public static var MMK: CPPayKit.CPCurrency
+  public static var MNT: CPPayKit.CPCurrency
+  public static var MOP: CPPayKit.CPCurrency
+  public static var MRU: CPPayKit.CPCurrency
+  public static var MUR: CPPayKit.CPCurrency
+  public static var MVR: CPPayKit.CPCurrency
+  public static var MWK: CPPayKit.CPCurrency
+  public static var MXN: CPPayKit.CPCurrency
+  public static var MXV: CPPayKit.CPCurrency
+  public static var MYR: CPPayKit.CPCurrency
+  public static var MZN: CPPayKit.CPCurrency
+  public static var NAD: CPPayKit.CPCurrency
+  public static var NGN: CPPayKit.CPCurrency
+  public static var NIO: CPPayKit.CPCurrency
+  public static var NOK: CPPayKit.CPCurrency
+  public static var NPR: CPPayKit.CPCurrency
+  public static var NZD: CPPayKit.CPCurrency
+  public static var OMR: CPPayKit.CPCurrency
+  public static var PAB: CPPayKit.CPCurrency
+  public static var PEN: CPPayKit.CPCurrency
+  public static var PGK: CPPayKit.CPCurrency
+  public static var PHP: CPPayKit.CPCurrency
+  public static var PKR: CPPayKit.CPCurrency
+  public static var PLN: CPPayKit.CPCurrency
+  public static var PYG: CPPayKit.CPCurrency
+  public static var QAR: CPPayKit.CPCurrency
+  public static var RON: CPPayKit.CPCurrency
+  public static var RSD: CPPayKit.CPCurrency
+  public static var RUB: CPPayKit.CPCurrency
+  public static var RWF: CPPayKit.CPCurrency
+  public static var SAR: CPPayKit.CPCurrency
+  public static var SBD: CPPayKit.CPCurrency
+  public static var SCR: CPPayKit.CPCurrency
+  public static var SDG: CPPayKit.CPCurrency
+  public static var SEK: CPPayKit.CPCurrency
+  public static var SGD: CPPayKit.CPCurrency
+  public static var SHP: CPPayKit.CPCurrency
+  public static var SLL: CPPayKit.CPCurrency
+  public static var SOS: CPPayKit.CPCurrency
+  public static var SRD: CPPayKit.CPCurrency
+  public static var SSP: CPPayKit.CPCurrency
+  public static var STN: CPPayKit.CPCurrency
+  public static var SVC: CPPayKit.CPCurrency
+  public static var SYP: CPPayKit.CPCurrency
+  public static var SZL: CPPayKit.CPCurrency
+  public static var THB: CPPayKit.CPCurrency
+  public static var TJS: CPPayKit.CPCurrency
+  public static var TMT: CPPayKit.CPCurrency
+  public static var TND: CPPayKit.CPCurrency
+  public static var TOP: CPPayKit.CPCurrency
+  public static var TRY: CPPayKit.CPCurrency
+  public static var TTD: CPPayKit.CPCurrency
+  public static var TWD: CPPayKit.CPCurrency
+  public static var TZS: CPPayKit.CPCurrency
+  public static var UAH: CPPayKit.CPCurrency
+  public static var UGX: CPPayKit.CPCurrency
+  public static var USD: CPPayKit.CPCurrency
+  public static var USN: CPPayKit.CPCurrency
+  public static var UYI: CPPayKit.CPCurrency
+  public static var UYU: CPPayKit.CPCurrency
+  public static var UYW: CPPayKit.CPCurrency
+  public static var UZS: CPPayKit.CPCurrency
+  public static var VES: CPPayKit.CPCurrency
+  public static var VND: CPPayKit.CPCurrency
+  public static var VUV: CPPayKit.CPCurrency
+  public static var WST: CPPayKit.CPCurrency
+  public static var XAF: CPPayKit.CPCurrency
+  public static var XCD: CPPayKit.CPCurrency
+  public static var XOF: CPPayKit.CPCurrency
+  public static var XPF: CPPayKit.CPCurrency
+  public static var YER: CPPayKit.CPCurrency
+  public static var ZAR: CPPayKit.CPCurrency
+  public static var ZMW: CPPayKit.CPCurrency
+  public static var ZWL: CPPayKit.CPCurrency
+}
+public struct CPSVA : CPPayKit.CPMoneyContainer, Swift.Equatable {
+  public typealias T = CPPayKit.CPSVA
+  public let id: Swift.Int
+  public let isDefault: Swift.Bool
+  public let containerType: CPPayKit.CPMoneyContainerType
+  public let attributes: [Swift.String : Swift.String]
+  public let currency: CPPayKit.CPCurrency
+  public var status: CPPayKit.CPMoneyContainerStatus {
+    get
+  }
+  public init?(fromMerchantSVAJson j: CPCoreKit.CPJSON)
+  public init?(fromJson j: CPCoreKit.CPJSON)
+  public static func == (lhs: CPPayKit.CPSVA, rhs: CPPayKit.CPSVA) -> Swift.Bool
+}
+@objc public protocol CPCardHandler {
+  @objc func add(_ card: CPPayKit.CPCreditCard, refetch: Swift.Bool, delegate: CPPayKit.CardCollectDelegate?, onSuccess: (() -> ())?, onFailure: (() -> ())?)
+}
+@_inheritsConvenienceInitializers @objc public class MockCardHandler : ObjectiveC.NSObject, CPPayKit.CPCardHandler {
+  @objc public func add(_ card: CPPayKit.CPCreditCard, refetch: Swift.Bool, delegate: CPPayKit.CardCollectDelegate?, onSuccess: (() -> ())?, onFailure: (() -> ())?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension CPPayKit.CPMoneyContainerType : Swift.Equatable {}
+extension CPPayKit.CPMoneyContainerType : Swift.Hashable {}
+extension CPPayKit.CPMoneyContainerType : Swift.RawRepresentable {}
+extension CPPayKit.CPPersonType : Swift.Equatable {}
+extension CPPayKit.CPPersonType : Swift.Hashable {}
+extension CPPayKit.CPPersonType : Swift.RawRepresentable {}
+extension CPPayKit.CPTransactionType : Swift.Equatable {}
+extension CPPayKit.CPTransactionType : Swift.Hashable {}
+extension CPPayKit.CPTransactionType : Swift.RawRepresentable {}
+extension CPPayKit.CPCardType : Swift.Equatable {}
+extension CPPayKit.CPCardType : Swift.Hashable {}
+extension CPPayKit.CPMoneyContainerStatus : Swift.Equatable {}
+extension CPPayKit.CPMoneyContainerStatus : Swift.Hashable {}
+extension CPPayKit.CPSort : Swift.Equatable {}
+extension CPPayKit.CPSort : Swift.Hashable {}
+extension CPPayKit.CPSort : Swift.RawRepresentable {}
+extension CPPayKit.CPBankAccountType : Swift.Equatable {}
+extension CPPayKit.CPBankAccountType : Swift.Hashable {}
+extension CPPayKit.CPBankAccountType : Swift.RawRepresentable {}
+extension CPPayKit.CPTransactionRole : Swift.Equatable {}
+extension CPPayKit.CPTransactionRole : Swift.Hashable {}
+extension CPPayKit.CPTransactionRole : Swift.RawRepresentable {}
+extension CPPayKit.MoneyContainerFetchFilter : Swift.Equatable {}
+extension CPPayKit.MoneyContainerFetchFilter : Swift.Hashable {}
+extension CPPayKit.MoneyContainerFetchFilter : Swift.RawRepresentable {}
+extension CPPayKit.CPTransactionStatus : Swift.Equatable {}
+extension CPPayKit.CPTransactionStatus : Swift.Hashable {}
+extension CPPayKit.CPTransactionStatus : Swift.RawRepresentable {}
+extension CPPayKit.CPTransactionSign : Swift.Equatable {}
+extension CPPayKit.CPTransactionSign : Swift.Hashable {}
+extension CPPayKit.CPTransactionSign : Swift.RawRepresentable {}

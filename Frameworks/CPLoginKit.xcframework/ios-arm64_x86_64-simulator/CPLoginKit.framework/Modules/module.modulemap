@@ -1,0 +1,11 @@
+framework module CPLoginKit {
+  umbrella header "CPLoginKit.h"
+
+  export *
+  module * { export * }
+}
+
+module CPLoginKit.Swift {
+    header "CPLoginKit-Swift.h"
+    requires objc
+}
