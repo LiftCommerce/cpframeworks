@@ -10,13 +10,13 @@ Pod::Spec.new do |s|
     s.version      = "1.0.0"
     s.summary      = "Foundational Cloud Payments iOS framework."
     s.description  = <<-DESC
-    An extended description of MyFramework project.
+    An extended description of CPCoreKit project.
     DESC
-    s.homepage     = "https://github.com/LiftCommerce/CPCoreKit"
+    s.homepage     = "https://github.com/LiftCommerce/CPXCFrameworks"
     s.license          = { :type => "MIT", :file => "LICENSE" }
     s.author             = { "Cloud Payments" => "apple@cloudpayments.com" }
-    s.source       = { :git => "https://github.com/LiftCommerce/CPCoreKit.git", :tag => s.version }
-    s.vendored_frameworks = "Framework/CPCoreKit.xcframework"
+    s.source       = { :git => "https://github.com/LiftCommerce/CPXCFrameworks.git", :tag => s.version }
+    s.vendored_frameworks = "CPCoreKit/CPCoreKit.xcframework"
     s.platform = :ios
     s.swift_version = "4.2"
     s.ios.deployment_target  = '13.0'

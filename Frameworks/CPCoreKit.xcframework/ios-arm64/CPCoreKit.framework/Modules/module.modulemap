@@ -1,4 +1,0 @@
-framework module CPCoreKit {
-  header "CPCoreKit-Swift.h"
-  requires objc
-}
